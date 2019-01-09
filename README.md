@@ -53,11 +53,23 @@
 	└── tests      //单元测试
 	    └── __init__.py
  项目启动步骤
+        创建虚拟环境：
+                mkvirtualenv  虚拟环境名称
+
+                进入虚拟环境
+
+        将扩展文件导入在doc/common.txt
+
+        执行命令：
+                pip install -r common.txt
+
+        创建数据库
+
+        数据库名称：
+                    db_home
 
     使用数据迁移命令创建数据库
 
-    创建虚拟环境：
-                mk
     python manage.py db init 初始化数据库
 
     python manage.py db migrate 提交修改
