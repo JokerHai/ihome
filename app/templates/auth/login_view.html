@@ -1,0 +1,114 @@
+<div class="login_form">
+    <div class="login_title">
+        <h3>登 录</h3>
+        <a href="javascript:;" class="shutoff"></a>
+    </div>
+    <div class="form_group">
+        <input id="login_mobile" type="text" name="mobile" autocomplete="off" onfocus="user_login_mobile_err_content()"
+               onblur="return check_login_mobile(false)" placeholder="手机号">
+        <div id="login-mobile-err" class="error_tip"></div>
+    </div>
+    <div class="form_group">
+        <input id="login_password" type="password" name="password" onfocus="user_login_password_err_content()"
+               placeholder="密码(不少于6位)" onblur="return check_login_pwd(false)">
+        <div id="login-password-err" class="error_tip"></div>
+    </div>
+    <input type="button" name="" value="登 录" class="input_sub" onclick="return ch_value()">
+    <div class="down_link">还没有账号？<a href="javascript:;" class="to_register">立即注册</a></div>
+</div>
+<div class="mask"></div>
+<script>
+    var exist_login_mobile_err_state = false;
+    var exist_login_password_err_state = false;
+    $(function () {
+        $('.shutoff').click(function () {
+            $(this).closest('form').hide();
+        })
+    })
+    function user_login_mobile_err_content() {
+        if (exist_login_mobile_err_state === false) {
+            $("#login-mobile-err").html("请您输入手机号").show();
+        }
+    }
+    function user_login_password_err_content() {
+        if (exist_login_password_err_state === false) {
+            $("#login-password-err").html("请输入密码").show();
+        }
+    }
+    function check_login_mobile(is_submit) {
+        //验证手机号码格式   checkTel
+        var login_mobile = gtrim($("#login_mobile").val());
+        if (login_mobile.length <= 0) {
+            if (is_submit) {
+                $("#login-mobile-err").show();
+                $("#login-mobile-err").html("请输入您的手机号");
+                return false;
+            } else {
+                $("#login-mobile-err").hide();
+                $("#login-mobile-err").html("");
+                exist_login_mobile_err_state = true;
+                return true;
+            }
+
+        } else if (checkTel(login_mobile) === false) {
+            $("#register-mobile-err").show();
+            $("#register-mobile-err").html("手机格式不正确");
+            return false;
+        } else {
+            $("#login-mobile-err").hide();
+            $("#login-mobile-err").html("");
+            exist_login_mobile_err_state = true
+            return true;
+        }
+
+    }
+    /**
+     * 获取密码
+     * @param {type Boolean} is_submit
+     */
+    function check_login_pwd(is_submit) {
+        var login_password = gtrim($("#login_password").val());
+        if (login_password.length <= 0) {
+            if (is_submit) {
+                $("#login-password-err").show();
+                $("#login-password-err").html("请输入密码");
+                return false;
+            } else {
+                $("#login-password-err").hide();
+                $("#login-password-err").html("");
+                exist_login_password_err_state = true;
+                return true;
+            }
+        } else {
+            $("#login-password-err").hide();
+            $("#login-password-err").html("");
+            exist_login_password_err_state = true;
+            return true;
+        }
+    }
+    function ch_value() {
+        var params = '';
+        var data_url = jsroot + '/auth/login';
+        check_login_mobile(true);
+        check_login_pwd(true);
+        var login_mobile = $("#login_mobile").val();
+        var login_password = $("#login_password").val();
+        var state = exist_login_mobile_err_state && exist_login_password_err_state;
+        if (state) {
+            console.log(login_password)
+            params = "login_mobile=" + encodeURIComponent(login_mobile)+"&login_password="+ encodeURIComponent(login_password);
+            handledata('post', data_url, params, 'json', login_response);
+        }
+        return state;
+    }
+    function login_response(msg_back) {
+        if (msg_back.status == "0") {
+            window.location.reload();
+            return true;
+        } else {
+            $("#login-password-err").html(msg_back.errmsg).show();
+            return false;
+        }
+    }
+
+</script>

@@ -1,0 +1,39 @@
+<div class="register_form">
+    <div class="register_title">
+        <h3>注 册</h3>
+        <a href="javascript:;" class="shutoff"></a>
+    </div>
+    <div class="form_group">
+        <input type="text" name="user_nick_name" autocomplete="off" id="user_nick_name" class="nick_name_input" placeholder = "请输入昵称" onfocus="user_nick_name_err_content()" onblur="return check_nick_name(false)">
+        <div id="register-nick-name-err" class="error_tip"></div>
+    </div>
+    <div class="form_group">
+        <input type="text" name="mobile" autocomplete="off" id="register_mobile" class="phone_input" placeholder = "可用于登录和找回密码" onfocus="user_mobile_err_content()" onblur="return check_mobile(false)">
+        <div id="register-mobile-err" class="error_tip"></div>
+    </div>
+    <div class="form_group">
+        <input type="text" name="code_pwd" id="imageCaptchaValue" class="code_pwd" placeholder = "请输入图片验证码" onfocus="user_imageCaptchaValue_err_content()" onblur="return check_image_captcha(false)">
+        <img src="{{ url_for('static',filename='images/pic_code.png') }}" class="get_pic_code"
+             onclick="generateImageCode()">
+        <div id="user_imageCaptcha_err" class="error_tip"></div>
+    </div>
+    <div class="form_group">
+        <input type="text" name="smscode" id="sms_code" class="code_pwd" placeholder = "请输入手机验证码" onfocus="user_code_pwd_err_content()" onblur="return check_code_pwd(false)">
+        <a href="javascript:;" class="get_code" onclick="sendSMSCode()">点击获取验证码</a>
+        <div id="register-sms-code-err" class="error_tip"></div>
+    </div>
+    <div class="form_group">
+        <input type="password" name="password" id="register_password" class="pass_input" placeholder="请设置登录密码" onfocus="user_register_password_err_content()" onblur="return check_pwd(false)">
+        <div id="register-password-err" class="error_tip"></div>
+    </div>
+    <div class="form_group2 clearfix">
+        <input type="checkbox" class="agree_input" checked="true" onclick="cl()" name="gc_vip">
+        <p>同意使用条款，并已阅读"跟帖评论自律管理承诺书"</p>
+        <div class="error_tip" id="gc_vip_error"></div>
+    </div>
+    <input type="button" name="" value="注 册" class="input_sub" onclick="return ch_value();">
+    <div class="down_link">已有账号？<a href="javascript:;" class="to_login">立即登录</a></div>
+</div>
+<div class="mask"></div>
+
+<script type="text/javascript" src="{{ url_for('static',filename='js/register.js') }}"></script>
