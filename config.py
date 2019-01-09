@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # 项目配置文件
 # @Author  : joker
-# @Date    : 2018-12-27
+# @Date    : 2018-12-27 test
 import logging
 from  redis import StrictRedis
 
