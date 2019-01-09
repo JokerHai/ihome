@@ -1,101 +1,126 @@
-var currentCid = 1; // 当前分类 id
-var cur_page = 1; // 当前页
-var total_page = 1;  // 总页数
-var house_data_querying = true;   // 是否正在向后台获取数据
-
-
-$(function () {
-
-    //调用updateNewsData方法跟新数据
-    updateNewsData()
-
-    // 首页分类切换
-    $('.menu li').click(function () {
-        var clickCid = $(this).attr('data-cid')
-        $('.menu li').each(function () {
-            $(this).removeClass('active')
-        })
-        $(this).addClass('active')
-
-        if (clickCid != currentCid) {
-            // 记录当前分类id
-            currentCid = clickCid
-
-            // 重置分页参数
-            cur_page = 1
-            total_page = 1
-            updateNewsData()
-        }
-    })
-
-    //页面滚动加载相关
-    $(window).scroll(function () {
-
-        // 浏览器窗口高度
-        var showHeight = $(window).height();
-
-        // 整个网页的高度
-        var pageHeight = $(document).height();
-
-        // 页面可以滚动的距离
-        var canScrollHeight = pageHeight - showHeight;
-
-        // 页面滚动了多少,这个是随着页面滚动实时变化的
-        var nowScroll = $(document).scrollTop();
-
-        if ((canScrollHeight - nowScroll) < 100) {
-            // TODO 判断页数，去更新新闻数据
-            if (!house_data_querying) {
-                // 将`是否正在向后端查询新闻数据`的标志设置为真
-                house_data_querying = true;
-                // 如果当前页面数还没到达总页数
-                if(cur_page < total_page) {
-                    // 向后端发送请求，查询下一页新闻数据
-                    updateNewsData();
-                } else {
-                    house_data_querying = false;
-                }
-            }
-        }
-    })
-})
-
-function updateNewsData() {
-    // TODO 更新新闻数据
-    var params = {
-        "page": cur_page,
-        "cid": currentCid,
-        'per_page': 5
-    }
-    /*
-    $.get("/newslist", params, function (resp) {
-        // 设置 `数据正在查询数据` 变量为 false，以便下次上拉加载
-        house_data_querying = false
-        if (resp) {
-            // // 记录总页数
-            total_page = resp.totalPage
-            // 如果当前页数为1，则清空原有数据
-            if (cur_page == 1) {
-                $(".list_con").html('')
-            }
-            // 当前页数递增
-            cur_page += 1
-
-            // 显示数据
-            for (var i=0;i<resp.newsList.length;i++) {
-                var news = resp.newsList[i]
-                var content = '<li>'
-                content += '<a href="/news/'+news.id+'" class="news_pic fl"><img src="' + news.index_image_url + '?imageView2/1/w/170/h/170"></a>'
-                content += '<a href="/news/'+news.id+'" class="news_title fl">' + news.title + '</a>'
-                content += '<a href="/news/'+news.id+'" class="news_detail fl">' + news.digest + '</a>'
-                content += '<div class="author_info fl">'
-                content += '<div class="source fl">来源：' + news.source + '</div>'
-                content += '<div class="time fl">' + news.create_time + '</div>'
-                content += '</div>'
-                content += '</li>'
-                $(".list_con").append(content)
-            }
-        }
-    })
-    */
+//模态框居中的控制
+function centerModals(){
+    $('.modal').each(function(i){   //遍历每一个模态框
+        var $clone = $(this).clone().css('display', 'block').appendTo('body');    
+        var top = Math.round(($clone.height() - $clone.find('.modal-content').height()) / 2);
+        top = top > 0 ? top : 0;
+        $clone.remove();
+        $(this).find('.modal-content').css("margin-top", top-30);  //修正原先已经有的30个像素
+    });
 }
+
+function setStartDate() {
+    var startDate = $("#start-date-input").val();
+    // startDate: 是一个js的对象 Date
+    if (startDate) {
+        $(".search-btn").attr("start-date", startDate);
+        $("#start-date-btn").html(startDate);
+        $("#end-date").datepicker("destroy");
+        $("#end-date-btn").html("离开日期");
+        $("#end-date-input").val("");
+        $(".search-btn").attr("end-date", "");
+        $("#end-date").datepicker({
+            language: "zh-CN",
+            keyboardNavigation: false,
+            startDate: new Date(Date.parse(startDate) + 86400000),
+            format: "yyyy-mm-dd"
+        });
+        $("#end-date").on("changeDate", function() {
+            $("#end-date-input").val(
+                $(this).datepicker("getFormattedDate")
+            );
+        });
+        $(".end-date").show();
+    }
+    $("#start-date-modal").modal("hide");
+}
+
+function setEndDate() {
+    var endDate = $("#end-date-input").val();
+    if (endDate) {
+        $(".search-btn").attr("end-date", endDate);
+        $("#end-date-btn").html(endDate);
+    }
+    $("#end-date-modal").modal("hide");
+}
+
+function goToSearchPage(th) {
+    var url = "/search.html?";
+    url += ("aid=" + $(th).attr("area-id"));
+    url += "&";
+    var areaName = $(th).attr("area-name");
+    if (undefined == areaName) areaName="";
+    url += ("aname=" + areaName);
+    url += "&";
+    url += ("sd=" + $(th).attr("start-date"));
+    url += "&";
+    url += ("ed=" + $(th).attr("end-date"));
+    location.href = url;
+}
+
+$(document).ready(function(){
+    // 默认显示注册/登录按钮
+    $(".register-login").show();
+    // 检查用户的登录状态
+    $.get('/api/v1.0/session', function (resp) {
+        if (resp.errno == "0") {
+            // 取数据进行判断是否有值
+            if (resp.data.user_id && resp.data.name) {
+                $(".register-login").hide();
+                $(".user-name").html(resp.data.name)
+                $(".user-info").show()
+            }else {
+                $(".register-login").show();
+            }
+        }
+    })
+
+    // 获取幻灯片要展示的房屋基本信息
+    $.get("/api/v1.0/houses/index", function (resp) {
+        if (resp.errno == "0") {
+            $(".swiper-wrapper").html(template("swiper-houses-tmpl", {"houses": resp.data}))
+            // 数据设置完毕后,需要设置幻灯片对象，开启幻灯片滚动
+            var mySwiper = new Swiper ('.swiper-container', {
+                loop: true,
+                autoplay: 2000,
+                autoplayDisableOnInteraction: false,
+                pagination: '.swiper-pagination',
+                paginationClickable: true
+            });
+        }
+    })
+
+
+    // 获取城区信息,获取完毕之后需要设置城区按钮点击之后相关操作
+    $.get('/api/v1.0/areas', function (resp) {
+        if (resp.errno == "0") {
+            $(".area-list").html(template("area-list-tmpl", {"areas": resp.data}))
+
+            // 给所的城区的a标签添加点击事件
+            $(".area-list a").click(function(e){
+                // 给点击的按钮设置当前点击的城区名
+                $("#area-btn").html($(this).html());
+                // 给搜索按钮设置 area_id，以便在点击的时候去进入到搜索界面带上参数
+                $(".search-btn").attr("area-id", $(this).attr("area-id"));
+                // 给搜索按钮设置城区的名字
+                $(".search-btn").attr("area-name", $(this).html());
+                // 隐藏当前的弹出框
+                $("#area-modal").modal("hide");
+            });
+        }
+    })
+
+
+    $('.modal').on('show.bs.modal', centerModals);      //当模态框出现的时候
+    $(window).on('resize', centerModals);               //当窗口大小变化的时候
+    $("#start-date").datepicker({
+        language: "zh-CN",
+        keyboardNavigation: false,
+        startDate: "today",
+        format: "yyyy-mm-dd"
+    });
+    $("#start-date").on("changeDate", function() {
+        var date = $(this).datepicker("getFormattedDate");
+        $("#start-date-input").val(date);
+    });
+})

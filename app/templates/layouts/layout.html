@@ -1,86 +1,44 @@
 {% extends "bootstrap/base.html" %}
-{% block title %}新闻资讯{% endblock %}
+
+{% block title %}Flasky{% endblock %}
 
 {% block head %}
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    {{ super() }}
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/favicon.ico') }}" type="image/x-icon">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/main.css') }}">
-    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery-1.12.4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static',filename='js/main.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plugins/font-awesome/css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plugins/swiper/css/swiper.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}">
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='plugins/swiper/js/swiper.jquery.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/template.js') }}"></script>
+    {% block head_son %}{% endblock %}
     <script>
         var jsroot = "{{ constants.HOME_URL }}";
     </script>
 {% endblock %}
 {% block navbar %}
-    <div class="header_con">
-        <div class="header">
-            <a href="#" class="logo fl"><img src="{{ url_for('static',filename='images/logo.png') }}" alt="logo"></a>
-            <ul class="menu fl">
-                <li class="active" data-cid="1"><a href="javascript:;">最新</a></li>
-                <li data-cid="2"><a href="javascript:;">股市</a></li>
-                <li data-cid="3"><a href="javascript:;">债市</a></li>
-                <li data-cid="4"><a href="javascript:;">商品</a></li>
-                <li data-cid="5"><a href="javascript:;">外汇</a></li>
-                <li data-cid="6"><a href="javascript:;">公司</a></li>
-            </ul>
-            {% if current_user.is_authenticated %}
-                <div class="user_login fr">
-                    <img src="{{ url_for('static',filename='images/person01.png') }}" class="lgin_pic">
-                    <a href="javascript:void(0);">{{ current_user.nick_name }}</a>
-                    <a href="javascript:void(0);" onclick="logout()">退出</a>
-                </div>
-            {% else %}
-                <div class="user_btns fr">
-                    <a href="javascript:void(0);" class="login_btn">登录</a> / <a href="javascript:void(0);"
-                                                                                class="register_btn">注册</a>
-                </div>
-            {% endif %}
+    <div class="container">
+    <div class="top-bar">
+        <img class="logo fl" src="{{ url_for('static',filename='images/logo@128x59.png') }}">
+        <div class="register-login fr">
+            <a class="btn top-btn btn-theme" href="/register.html">注册</a>
+            <a class="btn top-btn btn-theme" href="/login.html">登录</a>
         </div>
+        <div class="user-info fr"><span><i class="fa fa-user fa-lg"></i></span> <a class="user-name"
+                                                                                   href="/my.html"></a></div>
     </div>
 {% endblock %}
 {% block content %}
-    <div class="conter_con">
-        {% block page_content %}{% endblock %}
-        {% block fight_conter %}
-            <div class="rank_con fr">
-                <div class="rank_title">
-                    <h3>点击排行</h3>
-                </div>
-                <ul class="rank_list">
-                    <li><span class="first">1</span><a href="#">势如破竹！人民币再度连闯四道关口 在岸、离岸双双升破6.42</a></li>
-                    <li><span class="second">2</span><a href="#">凛冬已至，还有多少银行人在假装干银行</a></li>
-                    <li><span class="third">3</span><a href="#">人民日报：部分城市楼市放松限制引关注，楼市调控不会“拉抽屉”</a></li>
-                    <li><span>4</span><a href="#">势如破竹！人民币再度连闯四道关口 在岸、离岸双双升破6.42</a></li>
-                    <li><span>5</span><a href="#">凛冬已至，还有多少银行人在假装干银行</a></li>
-                    <li><span>6</span><a href="#">人民日报：部分城市楼市放松限制引关注，楼市调控不会“拉抽屉”</a></li>
-                </ul>
-            </div>
-        {% endblock %}
-    </div>
+    {% block page_content %}{% endblock %}
     {% block footer %}
         <div class="footer">
-            <div class="footer_links">
-                <a href="">关于我们</a>
-                <span>|</span>
-                <a href="">联系我们</a>
-                <span>|</span>
-                <a href="">招聘人才</a>
-                <span>|</span>
-                <a href="">友情链接</a>
-            </div>
-            <p class="copyright">
-                CopyRight © 2018 新经资讯信息技术有限公司 All Rights Reserved<br/>
-                电话：010-****888 京ICP备*******8号
-            </p>
+            <p><span><i class="fa fa-copyright"></i></span>爱家租房&nbsp;&nbsp;享受家的温馨</p>
         </div>
-        <!-- 注册表单 -->
-        <form class="register_form_con"></form>
-        <!-- 登录表单 -->
-        <form class="login_form_con"></form>
-
-        <input type="hidden" value="" id="image_code_id">
     {% endblock %}
 {% endblock %}
-{% block scripts %}
-    {{ super() }}
-{% endblock %}
+</div>
+{% block scripts %}{% endblock %}

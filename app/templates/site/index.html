@@ -1,59 +1,92 @@
 {% extends "layouts/layout.html" %}
-{% block title %}首页-新闻资讯{% endblock %}
+{% block title %}首页-爱家{% endblock %}
+{% block head_son %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
 {% block page_content %}
-    <ul class="list_con fl">
-        <li>
-            <a href="#" class="news_pic fl"><img src="{{ url_for('static',filename='images/news_pic.jpg') }}"></a>
-            <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市软银计划将手机业务分拆上市</a>
-            <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank
-                Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-            <div class="author_info fl">
-                <div class="author fl">
-                    <img src="{{ url_for('static',filename='images/person.png') }}" alt="author">
-                    <a href="#">乐鸣</a>
-                </div>
-                <div class="time fl">2017-01-01 00:00:00</div>
+    <div class="swiper-container">
+        <div class="swiper-wrapper">
+        </div>
+        <script id="swiper-houses-tmpl" type="text/html">
+            {#            {{ each houses as house}}#}
+            <div class="swiper-slide">
+                <a href="/detail.html?id="><img src=""></a>
+                <div class="slide-title"></div>
             </div>
-        </li>
-        <li>
-            <a href="#" class="news_pic fl"><img src="{{ url_for('static',filename='images/news_pic.jpg') }}"></a>
-            <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</a>
-            <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank
-                Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-            <div class="author_info fl">
-                <div class="source fl">
-                    来源：广州日报
+            {#            {{/each}}#}
+        </script>
+        <div class="swiper-pagination"></div>
+    </div>
+    <div class="search-bar">
+        <button class="filter-btn" type="button" data-toggle="modal" data-target="#area-modal"><span class="fl"
+                                                                                                     id="area-btn">选择城区</span><span
+                class="fr"><i class="fa fa-map-marker fa-lg fa-fw"></i></span></button>
+        <button class="filter-btn" type="button" data-toggle="modal" data-target="#start-date-modal"><span class="fl"
+                                                                                                           id="start-date-btn">入住日期</span><span
+                class="fr"><i class="fa fa-calendar fa-lg fa-fw"></i></span></button>
+        <button class="filter-btn end-date" type="button" data-toggle="modal" data-target="#end-date-modal"><span
+                class="fl" id="end-date-btn">离开日期</span><span class="fr"><i
+                class="fa fa-calendar fa-lg fa-fw"></i></span></button>
+        <a class="btn search-btn btn-theme" href="#" onclick="goToSearchPage(this);" area-id="" start-date=""
+           end-date="">搜索</a>
+        <div class="modal fade" id="area-modal" tabindex="-1" role="dialog" aria-labelledby="area-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="area-label">选择城区</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="area-list">
+                        </div>
+                        <script id="area-list-tmpl" type="text/html">
+{#                            {{ each areas as area}}#}
+                            <a href="#" area-id=""></a>
+{#                            {{/each}}#}
+                        </script>
+                    </div>
                 </div>
-                <div class="time fl">2017-01-01 00:00:00</div>
             </div>
-        </li>
-        <li>
-            <a href="#" class="news_pic fl"><img src="{{ url_for('static',filename='images/news_pic.jpg') }}"></a>
-            <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</a>
-            <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank
-                Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-            <div class="author_info fl">
-                <div class="author fl">
-                    <img src="{{ url_for('static',filename='images/person.png') }}" alt="author">
-                    <a href="#">乐鸣</a>
+        </div>
+        <div class="modal fade" id="start-date-modal" tabindex="-1" role="dialog" aria-labelledby="start-date-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="start-date-label">入住日期</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="date-select" id="start-date"></div>
+                        <input type="hidden" id="start-date-input">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-theme" onclick="setStartDate();">确定</button>
+                    </div>
                 </div>
-                <div class="time fl">2017-01-01 00:00:00</div>
             </div>
-        </li>
-        <li>
-            <a href="#" class="news_pic fl"><img src="{{ url_for('static',filename='images/news_pic.jpg') }}"></a>
-            <a href="#" class="news_title fl">日本史上最大IPO之一要来了：软银计划将手机业务分拆上市</a>
-            <a href="#" class="news_detail fl">据日经新闻网，软银计划让旗下核心业务移动手机部门SoftBank
-                Corp.分拆上市，或募资2万亿日元(约180亿美元)。随着软银逐步向投资公司转型，此举旨在给手机业务部门更多自主权。</a>
-            <div class="author_info fl">
-                <div class="source fl">
-                    来源：广州日报
+        </div>
+        <div class="modal fade" id="end-date-modal" tabindex="-1" role="dialog" aria-labelledby="end-date-label">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="end-date-label">离开日期</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="date-select" id="end-date"></div>
+                        <input type="hidden" id="end-date-input">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-theme" onclick="setEndDate();">确定</button>
+                    </div>
                 </div>
-                <div class="time fl">2017-01-01 00:00:00</div>
             </div>
-        </li>
-    </ul>
+        </div>
+    </div>
 {% endblock %}
 {% block scripts %}
-        <script type="text/javascript" src="{{ url_for('static',filename='js/index.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/index.js') }}"></script>
 {% endblock %}
