@@ -56,6 +56,8 @@
 
     使用数据迁移命令创建数据库
 
+    创建虚拟环境：
+                mk
     python manage.py db init 初始化数据库
 
     python manage.py db migrate 提交修改
