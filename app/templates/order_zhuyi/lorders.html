@@ -89,11 +89,8 @@
                 </div>
             </div>
         </div>
-        <div class="footer">
-            <p><span><i class="fa fa-copyright"></i></span>爱家租房&nbsp;&nbsp;享受家的温馨</p>
-        </div>
-        {% block scripts %}
-            <script src="../../static/js/lorders.js"></script>
-        {% endblock %}
-    </div>
+{% endblock %}
+</div>
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static',filename='js/lorders.js') }}"></script>
 {% endblock %}
