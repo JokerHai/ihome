@@ -8,7 +8,7 @@ $(document).ready(function(){
     // $('.popup_con').fadeOut('fast');
 
     // 在页面加载完毕之后获取区域信息
-    $.get("/api/v1.0/areas", function (resp) {
+    $.get("/api/v1/areas", function (resp) {
         if (resp.errno == "0") {
             // 将数据添加到select的标签中
             // for(var i=0; i<resp.data.length; i++) {
@@ -43,7 +43,7 @@ $(document).ready(function(){
         params["facility"] = facility
 
         $.ajax({
-            url: "/api/v1.0/houses",
+            url: "/api/v1/houses",
             type: "post",
             contentType: "application/json",
             headers: {
