@@ -16,41 +16,51 @@
         <div class="top-bar">
             <div class="nav-bar">
                 <h3 class="page-title">我的订单</h3>
-                <a class="nav-btn fl" href="#"><span><i class="fa fa-angle-left fa-2x"></i></span></a>
+                <a class="nav-btn fl" href="user_index"><span><i class="fa fa-angle-left fa-2x"></i></span></a>
             </div>
         </div>
+        {% for order in data.my_order_list %}
         <div class="orders-con">
             <ul class="orders-list">
                 <li order-id="1">
                     <div class="order-title">
-                        <h3>订单编号：1100281</h3>
-                        <div class="fr order-operate">
-                            <button type="button" class="btn btn-success order-comment" data-toggle="modal" data-target="#comment-modal">发表评价</button>
-                        </div>
+                        <h3>订单编号：{{ order.order_id }}</h3>
+                        {% if order.status == 'WAIT_COMMENT' %}
+                            <div class="fr order-operate">
+                                <button type="button" class="btn btn-success order-comment" data-toggle="modal" data-target="#comment-modal">发表评价</button>
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="order-content">
                         <img src="../../static/images/home01.jpg">
-                        {% for order in data.other_orders_list %}
                             <div class="order-text">
-                            <h3>海景房</h3>
+                            <h3>{{ order.title }}</h3>
                             <ul>
-                                <li>创建时间：2018-8-17</li>
-                                <li>入住日期：2018-9-17</li>
-                                <li>离开日期：2018-9-19</li>
-                                <li>合计金额：￥208(共2晚)</li>
+                                <li>创建时间：{{ order.ctime }}</li>
+                                <li>入住日期：{{ order.start_date }}</li>
+                                <li>离开日期：{{ order.end_date }}</li>
+                                <li>合计金额：￥{{ order.amount }}(共{{ order.days }}晚)</li>
                                 <li>订单状态：
                                     <span>
-                                        待接单
-                                        待评价
-                                        已完成
-                                        已拒单
+                                        {% if order.status == 'WAIT_ACCEPT' %}
+                                            待接单
+                                        {% elif order.status == 'WAIT_COMMENT' %}
+                                            待评价
+                                        {% elif order.status == 'COMPLETE' %}
+                                            已完成
+                                        {% elif order.status == 'REJECTED' %}
+                                            已拒单
+                                        {% endif %}
                                     </span>
                                 </li>
-                                <li>我的评价： 好</li>
-                                <li>拒单原因： 不好</li>
+                                {% if order.status == 'COMPLETE' %}
+                                    <li>我的评价： {{ order.comment }}</li>
+                                {% endif %}
+                                {% if order.status == 'REJECTED' %}
+                                    <li>拒单原因： {{ order.comment }}</li>
+                                {% endif %}
                             </ul>
                         </div>
-                        {% endfor %}
                     </div>
                 </li>
             </ul>
@@ -72,6 +82,7 @@
                 </div>
             </div>
         </div>
+        {% endfor %}
     {% block scripts %}
         <script src="../../static/js/orders.js"></script>
     {% endblock %}
