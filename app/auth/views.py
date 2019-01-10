@@ -28,14 +28,14 @@ def before_request():
 
 @auth.route('/login_view', methods=['GET', 'POST'])
 def login_view():
-    return render_template("auth/login_view.html")
+    return render_template("auth/login.html")
 
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     try:
-        login_mobile = request.form.get('login_mobile')
-        login_password = request.form.get('login_password')
+        login_mobile = request.json.get('login_mobile')
+        login_password = request.json.get('login_password')
 
         if not all([login_mobile, login_password]):
             return jsonify(status=RET.PARAMERR, errmsg="参数不全")
@@ -74,13 +74,18 @@ def logout():
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     try:
-        user_nick_name = request.form.get('user_nick_name')
-        mobile = request.form.get('mobile')
-        iphone_code = request.form.get('sms_code')
-        password = request.form.get('user_password')
+        user_nick_name = request.json.get('user_nick_name')
+        mobile = request.json.get('mobile')
+        iphone_code = request.json.get('phonecode')
+        password = request.json.get('password')
+        password2 = request.json.get('password2')
 
         if not all([mobile, iphone_code, password, user_nick_name]):
+
             return jsonify(status=RET.PARAMERR, errmsg="参数不合法")
+
+        if password != password2:
+            return jsonify(status=RET.DATAERR, errmsg = "两次输入密码不正确")
 
         redis_sms_code = redis_store.get("sms_code:%s" % mobile).decode()
 
@@ -95,13 +100,11 @@ def register():
         if not flag_delete:
             return jsonify(status=RET.DBERR, errmsg="短信验证码删除失败")
 
-        user = User(nick_name=user_nick_name,
+        user = User(name=user_nick_name,
 
                     mobile=mobile,
 
-                    signature='该用户很懒,什么都没写',
-
-                    password=password,
+                    password= password,
 
                     confirmed=True
                     )
@@ -122,7 +125,7 @@ def register():
 # 弹出注册页面
 @auth.route('/register_view', methods=['GET'])
 def register_view():
-    return render_template("auth/register_view.html")
+    return render_template("auth/register.html")
 
 
 @auth.route('/check_mobile', methods=['POST'])
@@ -182,7 +185,7 @@ def check_image_captcha():
 
 
 # 获取图片验证码
-@auth.route('/captcha_image')
+@auth.route('/captcha_image',methods=['GET'])
 def captcha_image():
     """
     获取图片验证码
