@@ -76,19 +76,19 @@ $(document).ready(function(){
     // })
 
     // 获取幻灯片要展示的房屋基本信息
-    // $.get("/api/v1.0/houses/index", function (resp) {
-    //     if (resp.errno == "0") {
-    //         $(".swiper-wrapper").html(template("swiper-houses-tmpl", {"houses": resp.data}))
-    //         // 数据设置完毕后,需要设置幻灯片对象，开启幻灯片滚动
-    //         var mySwiper = new Swiper ('.swiper-container', {
-    //             loop: true,
-    //             autoplay: 2000,
-    //             autoplayDisableOnInteraction: false,
-    //             pagination: '.swiper-pagination',
-    //             paginationClickable: true
-    //         });
-    //     }
-    // })
+    $.get("/api/houses_index", function (resp) {
+        if (resp.status == "0") {
+            //$(".swiper-wrapper").html(template("swiper-houses-tmpl", {"houses": resp.data}))
+            // 数据设置完毕后,需要设置幻灯片对象，开启幻灯片滚动
+            var mySwiper = new Swiper ('.swiper-container', {
+                loop: true,
+                autoplay: 2000,
+                autoplayDisableOnInteraction: false,
+                pagination: '.swiper-pagination',
+                paginationClickable: true
+            });
+        }
+    })
 
 
     // 获取城区信息,获取完毕之后需要设置城区按钮点击之后相关操作
