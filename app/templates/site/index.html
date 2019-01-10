@@ -3,24 +3,29 @@
 {% block head_son %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
-
 {% block page_content %}
     <div class="swiper-container">
         <div class="swiper-wrapper">
-
-        </div>
-        <script id="swiper-houses-tmpl" type="text/html">
-            {#            {{ each houses as house}}#}
             <div class="swiper-slide">
-                <a href="../../static/html/detail.html?id="><img src=""></a>
+                <a href="../../static/html/detail.html?id="><img
+                        src="http://img3.imgtn.bdimg.com/it/u=285959312,3266930479&fm=26&gp=0.jpg"></a>
                 <div class="slide-title"></div>
             </div>
-            {#            {{/each}}#}
-        </script>
+            <div class="swiper-slide">
+                <a href="../../static/html/detail.html?id="><img
+                        src="http://img3.imgtn.bdimg.com/it/u=285959312,3266930479&fm=26&gp=0.jpg"></a>
+                <div class="slide-title"></div>
+            </div>            <div class="swiper-slide">
+                <a href="../../static/html/detail.html?id="><img
+                        src="https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1547136349372&di=53d8eabca4b40bdd810571e5a410582a&imgtype=0&src=http%3A%2F%2Fpic.92to.com%2Fwx%2F201610%2F02%2Fdf3e4058fffe4030859299d2dda3e156.png"></a>
+                <div class="slide-title"></div>
+            </div>
+        </div>
         <div class="swiper-pagination"></div>
     </div>
     <div class="search-bar">
-        <button class="filter-btn" type="button" data-toggle="modal" data-target="#area-modal"><span class="fl" id="area-btn">选择城区</span><span
+        <button class="filter-btn" type="button" data-toggle="modal" data-target="#area-modal"><span class="fl"
+                                                                                                     id="area-btn">选择城区</span><span
                 class="fr"><i class="fa fa-map-marker fa-lg fa-fw"></i></span></button>
         <button class="filter-btn" type="button" data-toggle="modal" data-target="#start-date-modal"><span class="fl"
                                                                                                            id="start-date-btn">入住日期</span><span

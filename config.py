@@ -60,7 +60,7 @@ class DevelopmentConfig(Config):
 
     DEBUG = True
 
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://"+\
+    SQLALCHEMY_DATABASE_URI = "mysql://"+\
         Config.MYSQL_DB_USERNAME+":"+Config.MYSQL_DB_PASSWORD+"@"+Config.MYSQL_DB_HOST+":"+Config.MYSQL_DB_PORT+"/"+Config.MYSQL_DB_NAME
 
 class ProductionConfig(Config):

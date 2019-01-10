@@ -5,14 +5,9 @@ function getCookie(name) {
 
 // 点击推出按钮时执行的函数
 function logout() {
-    $.ajax({
-        url: "/api/v1.0/session",
-        type: "delete",
-        headers: {
-            "X-CSRFToken": getCookie("csrf_token")
-        },
-        success: function (resp) {
-            location.href = "/index.html"
+    $.get(jsroot+"/auth/logout",function (resp) {
+        if(resp.status == "0"){
+            location.href = jsroot
         }
     })
 }
