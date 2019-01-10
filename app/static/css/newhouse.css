@@ -83,9 +83,6 @@ body {
     margin-bottom: 10px;
     font-size: 20px;
 }
-#form-house-image {
-    display: none;
-}
 .error-msg {
     display: none;
     font-size: 14px;

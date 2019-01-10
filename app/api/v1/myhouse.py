@@ -39,4 +39,5 @@ from . import api
 
 @api.route('/v1/myhouse',methods = ['GET'])
 def myhouse():
-    return current_app.send_static_file("html/"+"myhouse.html")
+    #return current_app.send_static_file("html/"+"myhouse.html")
+    return render_template('newhouse/myhouse.html')
