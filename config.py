@@ -54,7 +54,7 @@ class Config:
     @staticmethod
     def init_app(app):
         pass
-
+    
 #开发环境配置文件
 class DevelopmentConfig(Config):
 

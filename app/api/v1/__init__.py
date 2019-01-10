@@ -10,5 +10,8 @@ api = Blueprint('api',__name__)
 
 
 from ..v1 import booking
-from ..v1 import views, area
+
+from ..v1 import views, area,myhouse,newhouse, users
+
+
 
