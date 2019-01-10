@@ -74,10 +74,8 @@ def my_orders():
         # 判断当前用户类型，根据用户是否实名进行判断
         # 如果不是房东
         if not user.id_card:
-            return redirect('/api/auth')
-            # return jsonify(errno=RET.PARAMERR, errmsg="本功能需要实名认证")
             # 跳转到实名认证页面
-            # return render_template()
+            return redirect('/api/auth')
         else:
             # 用户是否有出租房间
             # 如果无房间
