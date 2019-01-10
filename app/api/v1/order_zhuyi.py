@@ -4,6 +4,7 @@ from flask import render_template, jsonify
 from flask import request
 
 from app import db
+from app.common.common import user_login_data
 from app.common.response_code import RET
 from app.models import Order, House, User
 from . import api
@@ -34,8 +35,8 @@ from . import api
 #     "errmsg": "OK",                           错误信息
 #     "errno": "0"                              错误编号
 @api.route('/orders')
+@user_login_data
 def my_orders():
-    userLoginTest()
     # 判断用户是否登录
     if not g.user:
         return jsonify(errno=RET.SESSIONERR, errmsg="用户未登录")
@@ -57,7 +58,7 @@ def my_orders():
             return jsonify(errno=RET.DBERR, errmsg="查询订单失败")
         # 判断查询结果是否为空
         if not my_orders:
-            return jsonify(errno=RET.NODATA, errmsg="暂时没有订单")
+            return render_template('order_zhuyi/orders.html',data=None)
         # 数据转换为字典
         my_order_list = []
         for order in my_orders:
@@ -117,8 +118,8 @@ def my_orders():
 #    "errno": "0",      错误编号
 #    "errmsg": "OK"     错误信息
 @api.route('/orders/comment', methods=['PUT'])
+@user_login_data
 def orders_comment():
-    userLoginTest()
     # 判断用户是否登录
     if not g.user:
         return jsonify(errno=RET.SESSIONERR, errmsg="用户未登录")
@@ -164,8 +165,8 @@ def orders_comment():
 #    "errno": "0",
 #    "errmsg": "OK"
 @api.route('/orders/action', methods=['PUT'])
+@user_login_data
 def other_orders():
-    userLoginTest()
     # 判断用户是否登录
     if not g.user:
         return jsonify(errno=RET.SESSIONERR, errmsg="用户未登录")
@@ -210,9 +211,9 @@ def other_orders():
 
 
 # 用户登录测试
-def userLoginTest():
+def userLoginTest(userid):
     try:
-        user = User.query.get(8)
+        user = User.query.get(userid)
         g.user = user
     except Exception as e:
         current_app.logger.error(e)

@@ -4,6 +4,7 @@
 # @Date    : 2018-12-28
 import random
 from flask import current_app, render_template, request, make_response, jsonify
+from flask import session
 from flask_login import login_user, logout_user, login_required, current_user
 from app import redis_store
 from app.common import constants
@@ -55,6 +56,7 @@ def fork_login(username, password):
 
     if user is not None and user.check_password(password):
         login_user(user, False)
+        session['user_id'] = user.id
         return True
     else:
         return False
@@ -65,6 +67,7 @@ def fork_login(username, password):
 def logout():
     try:
         logout_user();
+        session.pop('user_id', None)
         return jsonify(status=RET.OK, errmsg="退出成功")
     except Exception as e:
         current_app.logger.error(e)

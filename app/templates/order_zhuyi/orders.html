@@ -20,6 +20,7 @@
             </div>
         </div>
         <div class="orders-con">
+            {% if data.my_order_list %}
             {% for order in data.my_order_list %}
             <ul class="orders-list">
                 <li order-id={{ order.order_id }}>
@@ -65,6 +66,10 @@
                 </li>
             </ul>
             {% endfor %}
+            {% else %}
+                暂时没有订单!
+            {% endif %}
+
             <div class="modal fade" id="comment-modal" tabindex="-1" role="dialog" aria-labelledby="comment-label">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">

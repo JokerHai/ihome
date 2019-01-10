@@ -21,13 +21,13 @@ $(function(){
     // 查询房客订单
     // 如果是房客，在请求订单列表的时候传：custom
     // 房东：landlord
-    $.get("/api/orders?role=custom", function (resp) {
-        if (resp.errno == "0") {
-            // alert(1)
-            $(".orders-list").html(template("orders-list-tmpl", {"orders": resp.data.orders}))
-            // 查询成功之后需要设置评论的相关处理
-        }
-    })
+    // $.get("/api/orders?role=custom", function (resp) {
+    //     if (resp.errno == "0") {
+    //         // alert(1)
+    //         $(".orders-list").html(template("orders-list-tmpl", {"orders": resp.data.orders}))
+    //         // 查询成功之后需要设置评论的相关处理
+    //     }
+    // })
 
     $(".order-comment").click(function(){
         var orderId = $(this).parents("li").attr("order-id");
