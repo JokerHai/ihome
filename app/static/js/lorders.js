@@ -18,7 +18,7 @@ $(document).ready(function(){
     $('.modal').on('show.bs.modal', centerModals);      //当模态框出现的时候
     $(window).on('resize', centerModals);
     // 查询房东的订单
-    $.get("/api/v1.0/orders?role=landlord", function (resp) {
+    $.get("/api/orders?role=landlord", function (resp) {
         if (resp.errno == "0") {
             $(".orders-list").html(template("orders-list-tmpl", {"orders": resp.data.orders}))
             // 查询成功之后需要设置接单和拒单的处理
@@ -29,7 +29,7 @@ $(document).ready(function(){
             $(".modal-accept").on("click", function () {
                 var orderId = $(".modal-accept").attr("order-id")
                 $.ajax({
-                    url: "/api/v1.0/orders",
+                    url: "/api/orders",
                     type: "put",
                     contentType: "application/json",
                     headers: {
@@ -58,7 +58,7 @@ $(document).ready(function(){
                 var orderId = $(".modal-reject").attr("order-id")
                 var reason = $("#reject-reason").val()
                 $.ajax({
-                    url: "/api/v1.0/orders",
+                    url: "/api/orders",
                     type: "put",
                     contentType: "application/json",
                     headers: {
