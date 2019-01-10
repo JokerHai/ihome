@@ -3,14 +3,16 @@
 {% block head_son %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/index.css') }}">
 {% endblock %}
+
 {% block page_content %}
     <div class="swiper-container">
         <div class="swiper-wrapper">
+
         </div>
         <script id="swiper-houses-tmpl" type="text/html">
             {#            {{ each houses as house}}#}
             <div class="swiper-slide">
-                <a href="/detail.html?id="><img src=""></a>
+                <a href="../../static/html/detail.html?id="><img src=""></a>
                 <div class="slide-title"></div>
             </div>
             {#            {{/each}}#}
