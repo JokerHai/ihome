@@ -1,5 +1,6 @@
 from flask import current_app
 from flask import g
+from flask import redirect
 from flask import render_template, jsonify
 from flask import request
 
@@ -73,7 +74,8 @@ def my_orders():
         # 判断当前用户类型，根据用户是否实名进行判断
         # 如果不是房东
         if not user.id_card:
-            return jsonify(errno=RET.PARAMERR, errmsg="本功能需要实名认证")
+            return redirect('/api/auth')
+            # return jsonify(errno=RET.PARAMERR, errmsg="本功能需要实名认证")
             # 跳转到实名认证页面
             # return render_template()
         else:
@@ -175,14 +177,14 @@ def other_orders():
     order_id = request.json.get("order_id")
     reason = request.json.get("reason")
     # 校验参数，为空校验
-    if not all([action, order_id, reason]):
+    if not all([action, order_id]):
         return jsonify(errno=RET.PARAMERR, errmsg="参数不全")
     # 校验操作参数
     if not (action in ['accept', 'reject']):
         return jsonify(errno=RET.PARAMERR, errmsg="操作类型有误")
     # 查询订单信息
     try:
-        order = Order.query.filter().first()
+        order = Order.query.filter(Order.id == order_id).first()
     except Exception as e:
         current_app.logger.error(e)
         return jsonify(errno=RET.DBERR, errmsg="查询订单失败")
@@ -196,7 +198,10 @@ def other_orders():
             order.status = 'WAIT_COMMENT'
         # 拒单
         elif action == "reject":
+            if not reason:
+                return jsonify(errno=RET.PARAMERR, errmsg="参数不全")
             order.status = 'REJECTED'
+            order.comment = reason
         db.session.commit()
     except Exception as e:
         current_app.logger.error(e)
@@ -209,12 +214,3 @@ def other_orders():
 #     file_name = "html/" + file_name
 #     return current_app.send_static_file(file_name)
 
-
-# 用户登录测试
-def userLoginTest(userid):
-    try:
-        user = User.query.get(userid)
-        g.user = user
-    except Exception as e:
-        current_app.logger.error(e)
-        return jsonify(errno=RET.DBERR, errmsg="数据库连接失败")

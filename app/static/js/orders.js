@@ -57,10 +57,10 @@ $(function(){
             },
             success: function (resp) {
                 if (resp.errno == "0") {
-                    $(".orders-list>li[order-id="+ orderId +"]>div.order-content>div.order-text>ul li:eq(4)>span").html("已完成");
-                    $("ul.orders-list>li[order-id="+ orderId +"]>div.order-title>div.order-operate").hide();
-                    $("#comment-modal").modal("hide");
-                    return
+                    // $(".orders-list>li[order-id="+ orderId +"]>div.order-content>div.order-text>ul li:eq(4)>span").html("已完成");
+                    // $("ul.orders-list>li[order-id="+ orderId +"]>div.order-title>div.order-operate").hide();
+                    // $("#comment-modal").modal("hide");
+                    window.location.reload()
                 }else if (resp.errno == "4101") {
                     location.href = "/login.html"
                 }else {
