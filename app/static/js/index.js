@@ -62,39 +62,44 @@ $(document).ready(function(){
     // 默认显示注册/登录按钮
     $(".register-login").show();
     // 检查用户的登录状态
-    $.get('/api/v1.0/session', function (resp) {
-        if (resp.errno == "0") {
-            // 取数据进行判断是否有值
-            if (resp.data.user_id && resp.data.name) {
-                $(".register-login").hide();
-                $(".user-name").html(resp.data.name)
-                $(".user-info").show()
-            }else {
-                $(".register-login").show();
-            }
-        }
-    })
+    // $.get('/api/v1.0/session', function (resp) {
+    //     if (resp.errno == "0") {
+    //         // 取数据进行判断是否有值
+    //         if (resp.data.user_id && resp.data.name) {
+    //             $(".register-login").hide();
+    //             $(".user-name").html(resp.data.name)
+    //             $(".user-info").show()
+    //         }else {
+    //             $(".register-login").show();
+    //         }
+    //     }
+    // })
 
     // 获取幻灯片要展示的房屋基本信息
-    $.get("/api/v1.0/houses/index", function (resp) {
-        if (resp.errno == "0") {
-            $(".swiper-wrapper").html(template("swiper-houses-tmpl", {"houses": resp.data}))
-            // 数据设置完毕后,需要设置幻灯片对象，开启幻灯片滚动
-            var mySwiper = new Swiper ('.swiper-container', {
-                loop: true,
-                autoplay: 2000,
-                autoplayDisableOnInteraction: false,
-                pagination: '.swiper-pagination',
-                paginationClickable: true
-            });
-        }
-    })
+    // $.get("/api/v1.0/houses/index", function (resp) {
+    //     if (resp.errno == "0") {
+    //         $(".swiper-wrapper").html(template("swiper-houses-tmpl", {"houses": resp.data}))
+    //         // 数据设置完毕后,需要设置幻灯片对象，开启幻灯片滚动
+    //         var mySwiper = new Swiper ('.swiper-container', {
+    //             loop: true,
+    //             autoplay: 2000,
+    //             autoplayDisableOnInteraction: false,
+    //             pagination: '.swiper-pagination',
+    //             paginationClickable: true
+    //         });
+    //     }
+    // })
 
 
     // 获取城区信息,获取完毕之后需要设置城区按钮点击之后相关操作
-    $.get('/api/v1.0/areas', function (resp) {
-        if (resp.errno == "0") {
-            $(".area-list").html(template("area-list-tmpl", {"areas": resp.data}))
+    $.get(jsroot+'/api/get_area_list', function (resp) {
+        if (resp.status == "0") {
+            var content = "";
+            for (var i=0;i<resp.data.length;i++){
+                var area = resp.data[i];
+                content += '<a href="javascript:void(0);" area-id="'+area.aid+'">'+area.aname+'</a>';
+            }
+            $(".area-list").html(content)
 
             // 给所的城区的a标签添加点击事件
             $(".area-list a").click(function(e){

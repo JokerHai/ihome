@@ -20,8 +20,7 @@
         <div class="swiper-pagination"></div>
     </div>
     <div class="search-bar">
-        <button class="filter-btn" type="button" data-toggle="modal" data-target="#area-modal"><span class="fl"
-                                                                                                     id="area-btn">选择城区</span><span
+        <button class="filter-btn" type="button" data-toggle="modal" data-target="#area-modal"><span class="fl" id="area-btn">选择城区</span><span
                 class="fr"><i class="fa fa-map-marker fa-lg fa-fw"></i></span></button>
         <button class="filter-btn" type="button" data-toggle="modal" data-target="#start-date-modal"><span class="fl"
                                                                                                            id="start-date-btn">入住日期</span><span
@@ -40,13 +39,7 @@
                         <h4 class="modal-title" id="area-label">选择城区</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="area-list">
-                        </div>
-                        <script id="area-list-tmpl" type="text/html">
-{#                            {{ each areas as area}}#}
-                            <a href="#" area-id=""></a>
-{#                            {{/each}}#}
-                        </script>
+                        <div class="area-list"></div>
                     </div>
                 </div>
             </div>
