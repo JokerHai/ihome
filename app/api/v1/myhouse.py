@@ -10,7 +10,7 @@ from app.models import House, User
 from . import api
 
 
-@api.route('/v1/myhouse',methods = ['GET'])
+@api.route('/myhouse',methods = ['GET'])
 def myhouse():
 
     user = g.user

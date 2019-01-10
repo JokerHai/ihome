@@ -12,7 +12,7 @@ from . import api
 
 
 
-@api.route("/v1/newhouse", methods=["POST"])
+@api.route("/newhouse", methods=["POST"])
 def house_index():
 
     # 1.获取参数
