@@ -91,6 +91,6 @@ def house_index():
     # 5. 返回响应
     # return jsonify(errno=RET.OK, errmsg="发布成功")
 
-    # return  render_template('newhouse/../../static/html/newhouse.html')
+    return  render_template('newhouse/newhouse.html')
 
-    return current_app.send_static_file("html/" + "newhouse.html")
+    # return current_app.send_static_file("html/" + "newhouse.html")
