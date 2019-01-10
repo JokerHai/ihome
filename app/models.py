@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
-#ihome所使用的所有模型
+# ihome所使用的所有模型
 
 from datetime import datetime
+
+from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from .common import constants
-from . import db
+from . import db, login_manager
 
 
 class BaseModel(object):
@@ -14,7 +16,7 @@ class BaseModel(object):
     update_time = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)  # 记录的更新时间
 
 
-class User(BaseModel, db.Model):
+class User(UserMixin, BaseModel, db.Model):
     """用户"""
 
     __tablename__ = "ih_user_profile"
@@ -28,6 +30,8 @@ class User(BaseModel, db.Model):
     avatar_url = db.Column(db.String(128))  # 用户头像路径
     houses = db.relationship("House", backref="user")  # 用户发布的房屋
     orders = db.relationship("Order", backref="user")  # 用户下的订单
+    confirmed = db.Column(db.Boolean, default=False)  # 用户是否被确认
+    last_login = db.Column(db.DateTime, default=datetime.now)  # 最后一次登录时间
 
     @property  # 将 password方法提升成一个属性，而所修饰的方法会在获取passowrd的值的时候被调用
     def password(self):
@@ -38,7 +42,7 @@ class User(BaseModel, db.Model):
     def password(self, value):
         self.password_hash = generate_password_hash(value)
 
-    def check_passowrd(self, password):
+    def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
     def to_dict(self):
@@ -54,7 +58,16 @@ class User(BaseModel, db.Model):
             "real_name": self.real_name,
             "id_card": self.id_card
         }
-        return auth_dict
+    def ping(self):
+        self.last_login = datetime.utcnow()
+        db.session.add(self)
+    def __repr__(self):
+        return '<User {}>'.format(self.name)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class Area(BaseModel, db.Model):
@@ -231,4 +244,3 @@ class Order(BaseModel, db.Model):
             "comment": self.comment if self.comment else ""
         }
         return order_dict
-

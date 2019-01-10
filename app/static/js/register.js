@@ -19,10 +19,13 @@ var imageCodeId = ""
 var preImageCodeId = ""
 // 生成一个图片验证码的编号，并设置页面中图片验证码img标签的src属性
 function generateImageCode() {
+
+    var hidden_code_id = $("#image_code_id").val();
+
     // 1. 生成编号
     imageCodeId = generateUUID()
     // 2. 设置页面中图片验证码img标签的src属性
-    var url = "/api/v1.0/imagecode?cur=" + imageCodeId + "&pre=" + preImageCodeId
+    var url = jsroot+"/auth/captcha_image?cur_id=" + imageCodeId + "&pre_id=" + hidden_code_id
     // 找到image-code标签下的img标签，并设置src的属性值
     $(".image-code>img").attr("src", url)
     preImageCodeId = imageCodeId
@@ -55,7 +58,7 @@ function sendSMSCode() {
 
     //  通过ajax方式向后端接口发送请求，让后端发送短信验证码
     $.ajax({
-        url: "/api/v1.0/smscode",
+        url: jsroot+"/auth/sms_code",
         type: "post",
         data: JSON.stringify(params),
         headers: {
@@ -63,7 +66,7 @@ function sendSMSCode() {
         },
         contentType: "application/json",
         success: function (resp) {
-            if (resp.errno == "0") {
+            if (resp.status == "0") {
                 // 代表发送成功
                 var num = 60
                 var t = setInterval(function () {
@@ -83,7 +86,8 @@ function sendSMSCode() {
                 // 将发送短信的按钮置为可以点击
                 $(".phonecode-a").attr("onclick", "sendSMSCode();");
                 // 发送短信验证码失败
-                alert(resp.errmsg)
+                alert(resp.errmsg);
+                return false;
             }
         }
     })
@@ -115,6 +119,7 @@ $(document).ready(function() {
 
         // 取到用户输入的内容
         var mobile = $("#mobile").val()
+        var user_nick_name = $("#user_nick_name").val()
         var phonecode = $("#phonecode").val()
         var password = $("#password").val()
         var password2 = $("#password2").val()
@@ -139,11 +144,11 @@ $(document).ready(function() {
             $("#password2-err").show();
             return;
         }
-
         // var params = {
         //     "mobile": mobile,
-        //     "phonecode": phonecode,
-        //     "password": password,
+        //     "user_nick_name": user_nick_name,
+        //     "sms_code": phonecode,
+        //     "user_password": password,
         // }
 
         // 方式2：拼接参数
@@ -153,7 +158,7 @@ $(document).ready(function() {
         })
 
         $.ajax({
-            url:"/api/v1.0/user",
+            url:jsroot+"/auth/register",
             type: "post",
             headers: {
                 "X-CSRFToken": getCookie("csrf_token")
@@ -161,9 +166,9 @@ $(document).ready(function() {
             data: JSON.stringify(params),
             contentType: "application/json",
             success: function (resp) {
-                if (resp.errno == "0"){
+                if (resp.status == "0"){
                     // 直接回到首页
-                    location.href = "/index.html"
+                    location.href = jsroot;
                 }else {
                     $("#password2-err span").html(resp.errmsg)
                     $("#password2-err").show()

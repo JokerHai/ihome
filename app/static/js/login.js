@@ -27,12 +27,12 @@ $(document).ready(function() {
         }
 
         var params = {
-            "mobile": mobile,
-            "password": password,
+            "login_mobile": mobile,
+            "login_password": password,
         }
 
         $.ajax({
-            url:"/api/v1.0/session",
+            url:jsroot+"/auth/login",
             method: "post",
             headers: {
                 "X-CSRFToken": getCookie("csrf_token")
@@ -40,8 +40,8 @@ $(document).ready(function() {
             data: JSON.stringify(params),
             contentType: "application/json",
             success: function (resp) {
-                if (resp.errno == "0") {
-                    location.href = "/index.html"
+                if (resp.status == "0") {
+                    location.href = jsroot;
                 }else {
                     $("#password-err span").html(resp.errmsg)
                     $("#password-err").show()
