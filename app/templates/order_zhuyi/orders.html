@@ -30,7 +30,8 @@
                     </div>
                     <div class="order-content">
                         <img src="../../static/images/home01.jpg">
-                        <div class="order-text">
+                        {% for order in data.other_orders_list %}
+                            <div class="order-text">
                             <h3>海景房</h3>
                             <ul>
                                 <li>创建时间：2018-8-17</li>
@@ -49,6 +50,7 @@
                                 <li>拒单原因： 不好</li>
                             </ul>
                         </div>
+                        {% endfor %}
                     </div>
                 </li>
             </ul>

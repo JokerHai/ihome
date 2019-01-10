@@ -5,7 +5,7 @@ from flask import request
 
 from app import db
 from app.common.response_code import RET
-from app.models import Order, House
+from app.models import Order, House, User
 from . import api
 
 
@@ -35,6 +35,7 @@ from . import api
 #     "errno": "0"                              错误编号
 @api.route('/orders')
 def my_orders():
+    userLoginTest()
     # 判断用户是否登录
     if not g.user:
         return jsonify(errno=RET.SESSIONERR, errmsg="用户未登录")
@@ -117,6 +118,7 @@ def my_orders():
 #    "errmsg": "OK"     错误信息
 @api.route('/orders/comment', methods=['PUT'])
 def orders_comment():
+    userLoginTest()
     # 判断用户是否登录
     if not g.user:
         return jsonify(errno=RET.SESSIONERR, errmsg="用户未登录")
@@ -162,6 +164,7 @@ def orders_comment():
 #    "errmsg": "OK"
 @api.route('/orders/action', methods=['PUT'])
 def other_orders():
+    userLoginTest()
     # 判断用户是否登录
     if not g.user:
         return jsonify(errno=RET.SESSIONERR, errmsg="用户未登录")
@@ -203,3 +206,13 @@ def other_orders():
 # def order_test(file_name):
 #     file_name = "html/" + file_name
 #     return current_app.send_static_file(file_name)
+
+
+# 用户登录测试
+def userLoginTest():
+    try:
+        user = User.query.get(8)
+        g.user = user
+    except Exception as e:
+        current_app.logger.error(e)
+        return jsonify(errno=RET.DBERR, errmsg="数据库连接失败")
