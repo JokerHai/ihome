@@ -7,7 +7,7 @@ from flask import Blueprint
 
 api = Blueprint('api',__name__)
 
-from ..v1 import views, area,myhouse,newhouse, users,profile, booking
+from ..v1 import views, area,myhouse,newhouse, users,profile, booking, index
 
 
 
