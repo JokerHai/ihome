@@ -145,6 +145,7 @@ def orders_comment():
         order.comment = comment
         order.status = 'COMPLETE'
         db.session.commit()
+        return jsonify(errno=RET.OK, errmsg="评论成功")
     except Exception as e:
         current_app.logger.error(e)
         return jsonify(errno=RET.THIRDERR, errmsg="评论失败")
