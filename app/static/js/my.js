@@ -20,7 +20,7 @@ function logout() {
 $(document).ready(function(){
 
     // 在页面加载完毕之后去加载个人信息
-    $.get("/api/v1.0/user", function (resp) {
+    $.get("/api//user_index", function (resp) {
         if (resp.errno == "0") {
             // 设置数据
             $("#user-avatar").attr("src", resp.data.avatar_url)
