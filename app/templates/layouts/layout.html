@@ -30,7 +30,7 @@
     <div class="top-bar">
         <img class="logo fl" src="{{ url_for('static',filename='images/logo.png') }}">
         {% if current_user.is_authenticated %}
-            <div class="user-info fr"><span><i class="fa fa-user fa-lg"></i></span> <a class="user-name" href="/my.html">{{ current_user.name }}</a>
+            <div class="user-info fr"><span><i class="fa fa-user fa-lg"></i></span> <a class="user-name" href="{{ url_for('api.user_index') }}">{{ current_user.name }}</a>
             </div>
         {% else %}
             <div class="register-login fr">
