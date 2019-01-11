@@ -19,7 +19,12 @@
                         <h3>头像</h3>
                     </div>
                     <div class="menu-content">
-                        <img id="user-avatar" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1167581125,229415827&fm=26&gp=0.jpg">
+                        {% if user_info.avatar_url %}
+                            <img src="{{ user_info.avatar_url }}" alt="用户图片" class="now_user_pic">
+                        {% else %}
+                            <img src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1167581125,229415827&fm=26&gp=0.jpg" alt="用户图片" class="now_user_pic">
+                        {% endif %}
+{#                        <img id="user-avatar" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1167581125,229415827&fm=26&gp=0.jpg">#}
                         <div class="menu-text">
                             <form id="form-avatar" action="/api/v1.0/avatar" enctype="multipart/form-data">
                                 选择头像：<input type="file" accept="image/*" name="avatar">

@@ -30,13 +30,14 @@ $(document).ready(function () {
         e.preventDefault()
         // 上传头像
         $(this).ajaxSubmit({
-            url: "/api/v1.0/user/avatar",
+            url: "/api/pic_info",
             type: "post",
             headers: {
                 "X-CSRFToken": getCookie("csrf_token")
             },
             success: function (resp) {
                 if (resp.errno == "0") {
+                    window.location.reload()
                     $("#user-avatar").attr("src", resp.data.avatar_url)
                 }else if(resp.errno == "4101") {
                     location.href = "/login.html"
