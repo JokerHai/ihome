@@ -60,7 +60,7 @@ $(document).ready(function () {
         }
 
         $.ajax({
-            url: "/api/v1.0/user/name",
+            url: "/api/profile_view",
             type: "post",
             headers: {
                 "X-CSRFToken": getCookie("csrf_token")
