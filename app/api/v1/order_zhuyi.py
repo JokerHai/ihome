@@ -75,7 +75,7 @@ def my_orders():
         # 如果不是房东
         if not user.id_card:
             # 跳转到实名认证页面
-            return redirect('/api/auth')
+            return redirect('http://www.baidu.com')
         else:
             # 用户是否有出租房间
             # 如果无房间
