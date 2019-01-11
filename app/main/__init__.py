@@ -12,7 +12,6 @@ from ..main import views, errors
 from  ..common import constants
 
 
-
 @main.app_context_processor
 def inject_permissions():
     return dict(constants = constants)

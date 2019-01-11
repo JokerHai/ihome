@@ -12,6 +12,7 @@ from app.log import setup_log
 from config import config
 from flask_wtf.csrf import CSRFProtect, generate_csrf
 
+
 bootstrap = Bootstrap()
 
 db = SQLAlchemy()
@@ -19,7 +20,6 @@ db = SQLAlchemy()
 redis_store = None
 
 login_manager = LoginManager()
-
 
 def create_app(config_name):
     app = Flask(__name__)
@@ -77,5 +77,7 @@ def create_app(config_name):
     from .api.v1 import api as api_blueprint
 
     app.register_blueprint(api_blueprint, url_prefix='/api')
+
+    # print(app.url_map)
 
     return app
