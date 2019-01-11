@@ -11,27 +11,33 @@ function getCookie(name) {
     return r ? r[1] : undefined;
 }
 
-$(document).ready(function () {
+$(function () {
     // 在页面加载完毕向后端查询用户的信息
-    $.get("/api/v1.0/user", function (resp) {
-        if (resp.errno == "0") {
-            // 展示数据
-            $("#user-avatar").attr("src", resp.data.avatar_url)
-            $("#user-name").val(resp.data.name)
-        }else if(resp.errno == "4101") {
-            location.href = "/login.html"
-        }else {
-            alert(resp.errmsg)
-        }
-    })
+    // $.get("/api/v1.0/user", function (resp) {
+    //     if (resp.errno == "0") {
+    //         // 展示数据
+    //         $("#user-avatar").attr("src", resp.data.avatar_url)
+    //         $("#user-name").val(resp.data.name)
+    //     }else if(resp.errno == "4101") {
+    //         location.href = "/login.html"
+    //     }else {
+    //         alert(resp.errmsg)
+    //     }
+    // })
 
     //  管理上传用户头像表单的行为
     $("#form-avatar").submit(function (e) {
+        // alert(1)
         e.preventDefault()
         // 上传头像
         $(this).ajaxSubmit({
+            beforeSubmit: function(request){
+                for(var i = 0; i<request.length;i++){
+                    var item = request[i]
+                }
+            },
             url: "/api/pic_info",
-            type: "post",
+            type: "POST",
             headers: {
                 "X-CSRFToken": getCookie("csrf_token")
             },

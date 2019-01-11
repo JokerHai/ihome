@@ -69,6 +69,7 @@ def pic_info():
 
     # 将图片设置到用户对象
     g.user.avatar_url = image_name
+    db.session.commit()
 
     # 返回响应
     data = {

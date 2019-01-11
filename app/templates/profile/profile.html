@@ -26,8 +26,8 @@
                         {% endif %}
 {#                        <img id="user-avatar" src="https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1167581125,229415827&fm=26&gp=0.jpg">#}
                         <div class="menu-text">
-                            <form id="form-avatar" action="/api/v1.0/avatar" enctype="multipart/form-data">
-                                选择头像：<input type="file" accept="image/*" name="avatar">
+                            <form id="form-avatar">
+                                选择头像：<input type="file" name="avatar">
                                 <!--<input type="hidden" id="avatar_xsrf" name="_xsrf" value="">-->
                                 <input type="submit" class="btn btn-success" value="上传">
                             </form>
@@ -58,5 +58,6 @@
     {% endblock %}
 {% block scripts %}
     <script type="text/javascript" src="{{ url_for('static',filename='js/profile.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.form.min.js') }}"></script>
 {% endblock %}
 </div>
