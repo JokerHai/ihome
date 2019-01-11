@@ -1,12 +1,10 @@
 {% extends "layouts/layout.html" %}
-{% block title %}
-    爱家-房间信息
-{% endblock %}
+{% block title %}爱家-房间信息{% endblock %}
 
 {% block head_son %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detail.css') }}">
 {% endblock %}
-
+{% block navbar %} {% endblock %}
 {% block page_content %}
    <div class="container">
         <div class="top-bar">
@@ -16,20 +14,14 @@
             </div>
         </div>
         <div class="swiper-container">
-        </div>
-        <script id="house-image-tmpl" type="text/html">
             <ul class="swiper-wrapper">
-{#                {{each img_urls as img_url}}#}
-{#                <li class="swiper-slide"><img src="{{img_url}}"></li>#}
-{#                {{/each}}#}
+                <li class="swiper-slide"><img src="{{img_url}}"></li>
             </ul>
-            <div class="swiper-pagination"></div>
-            <div class="house-price">￥<span>{{(house.price/100.0).toFixed(0)}}</span>/晚</div>
-        </script>
-        <div class="detail-con">
+            <div class="swiper-pagination"></div>#}
+            <div class="house-price">￥<span>222333</span>/晚</div>
         </div>
-        <script id="house-detail-tmpl" type="text/html">
-            <div class="detail-header layout-style">
+        <div class="detail-con">
+        <div class="detail-header layout-style">
                 <h2 class="house-title">{{house.title}}</h2>
                 <div class="landlord-pic"><img src="{{house.user_avatar}}"></div>
                 <h2 class="landlord-name">房东： <span>{{house.user_name}}</span></h2>
@@ -112,7 +104,7 @@
                 </ul>
             </div>
             {%endif%}
-        </script>
+        </div>
         <a class="book-house" href="">即刻预定</a>
     </div>
 {% endblock %}

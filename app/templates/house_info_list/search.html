@@ -47,25 +47,31 @@
         </div>
         <div class="display-mask"></div>
         <ul class="house-list">
-        </ul>
-        <script id="house-list-tmpl" type="text/html">
-            {% for house in data.house_list %}
-            <li class="house-item">
-                <a href="/?id={{house.house_id}}"><img src="{{house.img_url}}"></a>
+             <li class="house-item">
+                <a href="/api/detail?id={{house.house_id}}"><img src="{{house.img_url}}"></a>
                 <div class="house-desc">
                     <div class="landlord-pic"><img src="{{house.user_avatar}}"></div>
-                    <div class="house-price">￥<span>{{(house.price/100.0).toFixed(0)}}</span>/晚</div>
+                    <div class="house-price">￥<span>2233</span>/晚</div>
                     <div class="house-intro">
                         <span class="house-title">{{house.title}}</span>
                         <em>出租{{house.room_count}}间 - {{house.order_count}}次入住 - {{house.address}}</em>
                     </div>
                 </div>
             </li>
-            {% endfor %}
-        </script>
+            <li class="house-item">
+                <a href="api/detail?id={{house.house_id}}"><img src="{{house.img_url}}"></a>
+                <div class="house-desc">
+                    <div class="landlord-pic"><img src="{{house.user_avatar}}"></div>
+                    <div class="house-price">￥<span>2233</span>/晚</div>
+                    <div class="house-intro">
+                        <span class="house-title">{{house.title}}</span>
+                        <em>出租{{house.room_count}}间 - {{house.order_count}}次入住 - {{house.address}}</em>
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 {% endblock %}
-
 {% block scripts %}
     <script type="text/javascript" src="{{ url_for('static',filename='js/search.js') }}"></script>
 {% endblock %}
