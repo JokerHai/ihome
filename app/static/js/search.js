@@ -83,8 +83,8 @@ $(document).ready(function(){
 
 
     // 获取筛选条件中的城市区域信息
-    $.get("/api/v1.0/areas", function(data){
-        if ("0" == data.errno) {
+    $.get("/api/get_area_list", function(data){
+        if ("0" == data.status) {
             var areaId = queryData["aid"];
             if (areaId) {
                 for (var i=0; i<data.data.length; i++) {
