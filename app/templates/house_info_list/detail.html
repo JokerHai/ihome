@@ -1,12 +1,20 @@
 {% extends "layouts/layout.html" %}
+<<<<<<< HEAD
 {% block title %}
     爱家-房间信息
 {% endblock %}
+=======
+{% block title %}爱家-房间信息{% endblock %}
+>>>>>>> 2ae919b16abc82debfcce4168a607b980db8f551
 
 {% block head_son %}
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detail.css') }}">
 {% endblock %}
+<<<<<<< HEAD
 
+=======
+{% block navbar %} {% endblock %}
+>>>>>>> 2ae919b16abc82debfcce4168a607b980db8f551
 {% block page_content %}
    <div class="container">
         <div class="top-bar">
@@ -16,6 +24,7 @@
             </div>
         </div>
         <div class="swiper-container">
+<<<<<<< HEAD
         </div>
         <script id="house-image-tmpl" type="text/html">
             <ul class="swiper-wrapper">
@@ -30,6 +39,16 @@
         </div>
         <script id="house-detail-tmpl" type="text/html">
             <div class="detail-header layout-style">
+=======
+            <ul class="swiper-wrapper">
+                <li class="swiper-slide"><img src="{{img_url}}"></li>
+            </ul>
+            <div class="swiper-pagination"></div>#}
+            <div class="house-price">￥<span>222333</span>/晚</div>
+        </div>
+        <div class="detail-con">
+        <div class="detail-header layout-style">
+>>>>>>> 2ae919b16abc82debfcce4168a607b980db8f551
                 <h2 class="house-title">{{house.title}}</h2>
                 <div class="landlord-pic"><img src="{{house.user_avatar}}"></div>
                 <h2 class="landlord-name">房东： <span>{{house.user_name}}</span></h2>
@@ -112,7 +131,11 @@
                 </ul>
             </div>
             {%endif%}
+<<<<<<< HEAD
         </script>
+=======
+        </div>
+>>>>>>> 2ae919b16abc82debfcce4168a607b980db8f551
         <a class="book-house" href="">即刻预定</a>
     </div>
 {% endblock %}
