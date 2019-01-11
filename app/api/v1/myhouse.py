@@ -3,41 +3,44 @@ from functools import wraps
 from flask import current_app
 from flask import g
 from flask import render_template, jsonify
+from flask import request
 from flask import session
-
 from app.common.response_code import RET
+from app.models import House, User
 from . import api
 
-#定义登陆装饰器,封装用户的登陆数据
-# def user_login_data(view_func):
-#     @wraps(view_func)
-#     def wrapper(*args,**kwargs):
-#         # 1.从session中取出用户的user_id
-#         user_id = session.get("user_id")
-#
-#         # 2通过user_id取出用户对象
-#         user = None
-#         if user_id:
-#             try:
-#                 from app.models import User
-#                 user = User.query.get(user_id)
-#             except Exception as e:
-#                 current_app.logger.error(e)
-#
-#         #3.将user数据封装到g对象
-#         g.user = user
-#
-#         return view_func(*args,**kwargs)
-#     return wrapper
 
-
-# 我的列表
-# 请求路径: /api/v1/newhouse
-# 请求方式:GET7
-# 请求参数:p，id_card
-# 返回值:GET渲染myhouse.html页面
-
-@api.route('/v1/myhouse',methods = ['GET'])
+@api.route('/myhouse',methods = ['GET'])
 def myhouse():
-    #return current_app.send_static_file("html/"+"myhouse.html")
-    return render_template('newhouse/myhouse.html')
+
+    # 获取用户的登陆信息
+    user_id = session.get("user_id")
+
+    # 通过user_id取出用户对象
+    user = None
+    if user_id:
+        try:
+            user = User.query.get(user_id)
+        except Exception as e:
+            current_app.logger.error(e)
+    if not user:
+        return jsonify(errno=RET.DBERR,errmsg="")
+
+    # 1. 取出当前用户real_name,id_card 判断是否认证
+    if not all([user.real_name, user.id_card]):
+        return render_template('house/myhouse.html',real_name=None,id_card=None)
+
+    # # 2.获取房屋
+    houses=[]
+    try:
+        houses = House.query.filter(House.user_id == user.id).order_by(House.create_time.desc()).all()
+    except Exception as e:
+        current_app.logger.error(e)
+
+    # 3.将房屋对象列表,转成字典列表
+    houses_list = []
+    for house in houses:
+        houses_list.append(house.to_basic_dict())
+    
+    #4.返回响应
+    return render_template('house/myhouse.html',houses_list=houses_list,real_name=user.real_name,id_card=user.id_card)

@@ -64,7 +64,7 @@ def create_app(config_name):
         resp.set_cookie("csrf_token", csrf_token)
 
         return resp
-    # 注册蓝图
+    # # 注册蓝图
 
     from .main import main as main_blueprint
 
