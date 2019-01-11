@@ -18,7 +18,7 @@ $(document).ready(function(){
     var houseId = queryData["id"];
 
     // 获取该房屋的详细信息
-    $.get('/api/v1.0/houses/' + houseId, function (resp) {
+    $.get('/api/houses/' + houseId, function (resp) {
         if (resp.errno == "0") {
             // 1. 显示房屋顶部图片
             $(".swiper-container").html(template("house-image-tmpl", {"img_urls": resp.data.house.img_urls, "price": resp.data.house.price}))
