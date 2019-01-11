@@ -1,3 +1,5 @@
+from flask_login import current_user
+
 from app.common import constants
 from flask import current_app
 from flask import g
@@ -12,13 +14,20 @@ from . import api
 
 
 
-@api.route('/newhouse', methods=['POST'])
-def house_index():
+@api.route('/newhouse', methods=['POST','GET'])
+def newhouse():
+    if request.method == 'GET':
+        data = {
+            'title':'测试'
+        }
+        # 5. 返回响应
+        return  render_template('house/newhouse.html',house = data)
 
-    if request.method == "POST":
-
+    elif request.method == "POST":
         # 1.获取参数
-        user_id = g.user_id
+        if not current_user.is_authenticated:
+            return jsonify(errno=RET.DBERR,errmsg="未登录")
+        user_id = current_user.id
         title = request.json.get("title")
         price = request.json.get("price")
         area_id = request.json.get("area_id")
@@ -50,14 +59,14 @@ def house_index():
         # 4. 创建房源对象,设置属性
         house = House()
         house.user_id = user_id
-    def after_request(resp):
-        # 调用系统方法,获取csrf_token
-        csrf_token = generate_csrf()
-
-        # 将csrf_token设置到cookie中
-        resp.set_cookie("csrf_token", csrf_token)
-
-        return resp
+    # def after_request(resp):
+    #     # 调用系统方法,获取csrf_token
+    #     csrf_token = generate_csrf()
+    #
+    #     # 将csrf_token设置到cookie中
+    #     resp.set_cookie("csrf_token", csrf_token)
+    #
+    #     return resp
     # 注册蓝图
         house.title = title
         house.price = price
@@ -80,8 +89,8 @@ def house_index():
             current_app.logger.error(e)
             return jsonify(errno=RET.DBERR, errmsg="房源发布失败")
 
-        # 5. 返回响应
-        return  render_template('house/newhouse.html',errmsg="发布成功")
+        # # 5. 返回响应
+        # return  render_template('house/newhouse.html',errmsg="发布成功")
 
 
 @api.route("/new/houses/image", methods=["POST"])

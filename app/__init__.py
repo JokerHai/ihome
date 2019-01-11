@@ -32,7 +32,7 @@ def create_app(config_name):
 
     # CSFR保护APP
 
-    # CSRFProtect(app)
+    CSRFProtect(app)
 
     db.init_app(app)
 
@@ -55,15 +55,15 @@ def create_app(config_name):
     setup_log(config.get(config_name).LOG_LEVEL)
 
     # csrf保护app
-    # @app.after_request
-    # def after_request(resp):
-    #     # 调用系统方法,获取csrf_token
-    #     csrf_token = generate_csrf()
-    #
-    #     # 将csrf_token设置到cookie中
-    #     resp.set_cookie("csrf_token", csrf_token)
-    #
-    #     return resp
+    @app.after_request
+    def after_request(resp):
+        # 调用系统方法,获取csrf_token
+        csrf_token = generate_csrf()
+
+        # 将csrf_token设置到cookie中
+        resp.set_cookie("csrf_token", csrf_token)
+
+        return resp
     # # 注册蓝图
 
     from .main import main as main_blueprint
