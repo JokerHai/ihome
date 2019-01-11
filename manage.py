@@ -4,7 +4,7 @@
 # @Date    : 2018-12-27
 from flask_migrate import Migrate, MigrateCommand
 from flask_script import Manager, Shell
-from app import create_app, db
+from app import create_app, db, models
 from app.models import User,Area,House,Facility,HouseImage, Order
 
 app = create_app('default')

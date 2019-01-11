@@ -17,43 +17,51 @@
                 </div>
             </div>
             <div class="houses-con">
-                <ul class="houses-list auth-warn">
-                    <li>
-                        <div class="house-title">
-                            <h3>尚未进行实名认证，无法发布房屋信息！</h3>
-                        </div>
-                        <div class="house-content">
-                            <a href="http://www.baidu.com" class="btn btn-success">去实名认证</a>
-                        </div>
-                    </li>
-                </ul>
-                <ul id="houses-list" class="houses-list"></ul>
-                    <li>
-                        <div class="new-house">
-                            <a href="http://www.baidu.com">发布新房源</a>
-                        </div>
-                    </li>
-                     {# 遍历展示用户发布过的房源 #}
-                    {% for house in houses_list %}
-                        <li>
-                            <a href="/detail.html?id={{house.house_id}}">
-                                <div class="house-title">
-                                    <h3>房屋ID:{{house.house_id}} —— {{house.title}}</h3>
-                                </div>
-                                <div class="house-content">
-                                    <img src="{{house.img_url}}">
-                                    <div class="house-text">
-                                        <ul>
-                                            <li>位于：{{house.area_name}}</li>
-                                            <li>价格：{{(house.price/100.0).toFixed(0)}}￥/晚</li>
-                                            <li>发布时间：{{house.ctime}}</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </a>
-                        </li>
 
-                    {% endfor %}
+                {# 判断根据认证状态显示页面 #}
+                {% if real_name == None and id_card == None %}
+
+                    <ul class="houses-list auth-warn">
+                        <li>
+                            <div class="house-title">
+                                <h3>尚未进行实名认证，无法发布房屋信息！</h3>
+                            </div>
+                            <div class="house-content">
+                                <a href="http://www.baidu.com" class="btn btn-success">去实名认证</a>
+                            </div>
+                        </li>
+                    </ul>
+
+                {% else %}
+                    <ul id="houses-list" class="houses-list"></ul>
+                        <li>
+                            <div class="new-house">
+                                <a href="{{ url_for('api.newhouse') }}">发布新房源</a>
+                            </div>
+                        </li>
+                         {# 遍历展示用户发布过的房源 #}
+                        {% for house in houses_list %}
+                            <li>
+                                <a href="/detail.html?id={{house.house_id}}">
+                                    <div class="house-title">
+                                        <h3>房屋ID:{{house.house_id}} —— {{house.title}}</h3>
+                                    </div>
+                                    <div class="house-content">
+                                        <img src="{{house.img_url}}">
+                                        <div class="house-text">
+                                            <ul>
+                                                <li>位于：{{house.area_name}}</li>
+                                                <li>价格：{{(house.price/100.0)}}￥/晚</li>  {# .toFixed(0)}} #}
+                                                <li>发布时间：{{house.ctime}}</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+
+                        {% endfor %}
+
+                {% endif %}
 
             </div>
       </div>

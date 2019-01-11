@@ -8,18 +8,17 @@ $(document).ready(function(){
     // $('.popup_con').fadeOut('fast');
 
     // 在页面加载完毕之后获取区域信息
-    $.get("/api/v1/areas", function (resp) {
-        if (resp.errno == "0") {
-            // 将数据添加到select的标签中
-            // for(var i=0; i<resp.data.length; i++) {
-            //     // <option value="1">东城区</option>
-            //     var areaId = resp.data[i].aid
-            //     var areaName = resp.data[i].aname
-            //     $("#area-id").append('<option value="' + areaId + '">' + areaName + '</option>')
-            // }
-
-            var html = template("areas-tmpl", {"areas": resp.data})
-            $("#area-id").html(html)
+    $.get("/api/get_area_list", function (resp) {
+        if (resp.status == "0") {
+            //将数据添加到select的标签中
+            var area_html = '';
+            for(var i=0; i<resp.data.length; i++) {
+                // <option value="1">东城区</option>
+                var areaId = resp.data[i].aid
+                var areaName = resp.data[i].aname
+                area_html += '<option value="' + areaId + '">' + areaName + '</option>';
+            }
+            $("#area-id").html(area_html)
         }else {
             alert(resp.errmsg)
         }
@@ -43,7 +42,7 @@ $(document).ready(function(){
         params["facility"] = facility
 
         $.ajax({
-            url: "/api/v1/houses",
+            url: "/api/newhouse",
             type: "post",
             contentType: "application/json",
             headers: {
@@ -57,7 +56,7 @@ $(document).ready(function(){
                     // 在上传房屋基本信息成功之后，去设置房屋的id，以便在上传房屋图片的时候使用
                     $("#house-id").val(resp.data.house_id)
                 }else if (resp.errno == "4101") {
-                    location.href = "/login.html"
+                    location.href = jsroot+"/auth/login_view"
                 }else {
                     alert(resp.errmsg)
                 }

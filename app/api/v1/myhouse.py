@@ -13,22 +13,27 @@ from . import api
 @api.route('/myhouse',methods = ['GET'])
 def myhouse():
 
-    user = g.user
+    # 获取用户的登陆信息
+    user_id = session.get("user_id")
+
+    # 通过user_id取出用户对象
+    user = None
+    if user_id:
+        try:
+            user = User.query.get(user_id)
+        except Exception as e:
+            current_app.logger.error(e)
+    if not user:
+        return jsonify(errno=RET.DBERR,errmsg="")
+
     # 1. 取出当前用户real_name,id_card 判断是否认证
-    try:
-        real_name = User.query.filter(User.real_name).first()
-        id_card = User.query.filter(User.id_card).first()
+    if not all([user.real_name, user.id_card]):
+        return render_template('house/myhouse.html',real_name=None,id_card=None)
 
-        if not all([real_name, id_card]):
-            return ""
-    except Exception as e:
-        current_app.logger.error(e)
-        return jsonify(errno=RET.DBERR, errmsg="该用户未认证")
-
-    # 2.获取房屋
+    # # 2.获取房屋
     houses=[]
     try:
-        houses = House.query.order_by(House.create_time()).all()
+        houses = House.query.filter(House.user_id == user.id).order_by(House.create_time.desc()).all()
     except Exception as e:
         current_app.logger.error(e)
 
@@ -36,6 +41,6 @@ def myhouse():
     houses_list = []
     for house in houses:
         houses_list.append(house.to_basic_dict())
-
+    
     #4.返回响应
-    return render_template('house/myhouse.html',houses_list=houses_list)
+    return render_template('house/myhouse.html',houses_list=houses_list,real_name=user.real_name,id_card=user.id_card)
