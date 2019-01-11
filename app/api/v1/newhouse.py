@@ -12,65 +12,76 @@ from . import api
 
 
 
-@api.route("/newhouse", methods=["POST"])
+@api.route('/newhouse', methods=['POST'])
 def house_index():
 
-    # 1.获取参数
-    user_id = g.user_id
-    title = request.json.get("title")
-    price = request.json.get("price")
-    area_id = request.json.get("area_id")
-    address = request.json.get("address")
-    room_count = request.json.get("room_count")
-    acreage = request.json.get("acreage")
-    unit = request.json.get("unit")
-    capacity = request.json.get("capacity")
-    beds = request.json.get("beds")
-    deposit = request.json.get("deposit")
-    min_days = request.json.get("min_days")
-    max_days = request.json.get("max_days")
-    facility = request.json.get("facility")
+    if request.method == "POST":
 
-    # 2. 校验参数,为空校验
-    if not all([title,price,area_id, address,room_count,acreage,unit,capacity,beds,deposit,min_days,max_days,facility]):
-        return jsonify(errno=RET.PARAMERR, errmsg="参数不全")
+        # 1.获取参数
+        user_id = g.user_id
+        title = request.json.get("title")
+        price = request.json.get("price")
+        area_id = request.json.get("area_id")
+        address = request.json.get("address")
+        room_count = request.json.get("room_count")
+        acreage = request.json.get("acreage")
+        unit = request.json.get("unit")
+        capacity = request.json.get("capacity")
+        beds = request.json.get("beds")
+        deposit = request.json.get("deposit")
+        min_days = request.json.get("min_days")
+        max_days = request.json.get("max_days")
+        facility = request.json.get("facility")
 
-    # 3.判断城区id是否存在
-    try:
-        area = Area.query.get(area_id)
-    except Exception as e:
-        current_app.logger.error(e)
-        return jsonify(errno=RET.DBERR, errmsg="数据库异常")
+        # 2. 校验参数,为空校验
+        if not all([title,price,area_id, address,room_count,acreage,unit,capacity,beds,deposit,min_days,max_days,facility]):
+            return jsonify(errno=RET.PARAMERR, errmsg="参数不全")
 
-    if area is None:
-        return jsonify(errno=RET.NODATA, errmsg="城区信息有误")
+        # 3.判断城区id是否存在
+        try:
+            area = Area.query.get(area_id)
+        except Exception as e:
+            current_app.logger.error(e)
+            return jsonify(errno=RET.DBERR, errmsg="数据库异常")
 
-    # 4. 创建房源对象,设置属性
-    house = House()
-    house.user_id = user_id
-    house.title = title
-    house.price = price
-    house.area_id = area_id
-    house.address = address
-    house.room_count = room_count
-    house.acreage = acreage
-    house.unit = unit
-    house.capacity = capacity
-    house.beds = beds
-    house.deposit = deposit
-    house.min_days = min_days
-    house.max_days = max_days
+        if area is None:
+            return jsonify(errno=RET.NODATA, errmsg="城区信息有误")
 
-    # 4. 保存到数据
-    try:
-        db.session.add(house)
-        db.session.commit()
-    except Exception as e:
-        current_app.logger.error(e)
-        return jsonify(errno=RET.DBERR, errmsg="房源发布失败")
+        # 4. 创建房源对象,设置属性
+        house = House()
+        house.user_id = user_id
+    def after_request(resp):
+        # 调用系统方法,获取csrf_token
+        csrf_token = generate_csrf()
 
-    # 5. 返回响应
-    return  render_template('house/newhouse.html',errmsg="发布成功")
+        # 将csrf_token设置到cookie中
+        resp.set_cookie("csrf_token", csrf_token)
+
+        return resp
+    # 注册蓝图
+        house.title = title
+        house.price = price
+        house.area_id = area_id
+        house.address = address
+        house.room_count = room_count
+        house.acreage = acreage
+        house.unit = unit
+        house.capacity = capacity
+        house.beds = beds
+        house.deposit = deposit
+        house.min_days = min_days
+        house.max_days = max_days
+
+        # 4. 保存到数据
+        try:
+            db.session.add(house)
+            db.session.commit()
+        except Exception as e:
+            current_app.logger.error(e)
+            return jsonify(errno=RET.DBERR, errmsg="房源发布失败")
+
+        # 5. 返回响应
+        return  render_template('house/newhouse.html',errmsg="发布成功")
 
 
 @api.route("/new/houses/image", methods=["POST"])
