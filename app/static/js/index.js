@@ -45,7 +45,7 @@ function setEndDate() {
 }
 
 function goToSearchPage(th) {
-    var url = jsroot+"/api/house_list?";
+    var url = jsroot+"/api/search_view?";
     url += ("aid=" + $(th).attr("area-id"));
     url += "&";
     var areaName = $(th).attr("area-name");

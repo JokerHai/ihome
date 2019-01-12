@@ -47,10 +47,10 @@ function updateHouseData(action) {
     };
     // 获取房屋列表信息
 
-    $.get("/api/v1.0/houses", params, function (resp) {
+    $.get("/api/houses_list", params, function (resp) {
         // 将正在加载数据的标志设置为false
         house_data_querying = false;
-        if (resp.errno == "0") {
+        if (resp.status == "0") {
             // 显示数据
             total_page = resp.data.total_page
             if (total_page == 0) {
@@ -58,12 +58,27 @@ function updateHouseData(action) {
             }else {
                 // 为什么要给cur_page赋值
                 cur_page = next_page
+                var house_list_html = ""
+                for (var i = 0; i<resp.data.houses.length;i++){
+                    house_list_html +=
+                        '<li class="house-item">'+
+                            '<a href="'+jsroot+'/api/show_detail/'+resp.data.houses[i].house_id+'"><img src="'+resp.data.houses[i].img_url+'"></a>'+
+                            '<div class="house-desc">'+
+                                '<div class="landlord-pic"><img src="'+resp.data.houses[i].user_avatar+'"></div>'+
+                                '<div class="house-price">￥<span>'+resp.data.houses[i].price+'</span>/晚</div>'+
+                            '<div class="house-intro">'+
+                                '<span class="house-title">'+resp.data.houses[i].title+'</span>'+
+                                '<em>出租'+resp.data.houses[i].room_count+'间 - '+resp.data.houses[i].order_count+'次入住 - '+resp.data.houses[i].address+'</em>'+
+                            '</div>'+
+                            '</div>'+
+                        '</li>'
+                }
                 if (action == "renew") {
                     // 代表是重新加载数据，直接设置html
-                    $(".house-list").html(template("house-list-tmpl", {"houses": resp.data.houses}))
+                    $(".house-list").html(house_list_html)
                 }else {
                     // 代表是加载后面几页，需要将后面的数据拼接到当前数据上
-                    $(".house-list").append(template("house-list-tmpl", {"houses": resp.data.houses}))
+                    $(".house-list").append(house_list_html)
                 }
             }
         }

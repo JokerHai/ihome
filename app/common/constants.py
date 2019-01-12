@@ -14,8 +14,8 @@ SMS_CODE_REDIS_EXPIRES = 120
 # 七牛空间域名
 QINIU_DOMIN_PREFIX = "http://pl2598lm5.bkt.clouddn.com/"
 
-# 首页展示最多的新闻数量
-HOME_PAGE_MAX_NEWS = 10
+# 搜索页展示最多的房源数量
+HOME_POSTS_PER_PAGE = 5
 
 # 用户的关注每一页最多数量
 USER_FOLLOWED_MAX_COUNT = 4
