@@ -9,9 +9,9 @@ main = Blueprint('main',__name__)
 
 from ..main import views, errors
 
-from  ..common import constants
+from  ..common import constants, params
 
 
 @main.app_context_processor
 def inject_permissions():
-    return dict(constants = constants)
+    return dict(constants = constants,params = params)

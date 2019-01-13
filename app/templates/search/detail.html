@@ -9,107 +9,109 @@
         <div class="top-bar">
             <div class="nav-bar">
                 <h3 class="page-title">房间信息</h3>
-                <a class="nav-btn fl" href="#" onclick="hrefBack();"><span><i class="fa fa-angle-left fa-2x"></i></span></a>
+                <a class="nav-btn fl" href="javascript:void(0);" onclick="hrefBack();"><span><i class="fa fa-angle-left fa-2x"></i></span></a>
             </div>
         </div>
         <div class="swiper-container">
+            <ul class="swiper-wrapper">
+                {% for item in data.house.img_urls %}
+                     <li class="swiper-slide"><img src="{{item}}"></li>
+                {% endfor %}
+            </ul>
+            <div class="swiper-pagination"></div>
+            <div class="house-price">￥<span>{{ data.house.price/100.0 }}</span>/晚</div>
         </div>
-{#        <script id="house-image-tmpl" type="text/html">#}
-{#            <ul class="swiper-wrapper">#}
-{#                {{each img_urls as img_url}}#}
-{#                <li class="swiper-slide"><img src="{{img_url}}"></li>#}
-{#                {{/each}}#}
-{#            </ul>#}
-{#            <div class="swiper-pagination"></div>#}
-{#            <div class="house-price">￥<span>{{(price/100.0).toFixed(0)}}</span>/晚</div>#}
-{#        </script>#}
         <div class="detail-con">
         </div>
-{#        <script id="house-detail-tmpl" type="text/html">#}
-{#            <div class="detail-header layout-style">#}
-{#                <h2 class="house-title">{{house.title}}</h2>#}
-{#                <div class="landlord-pic"><img src="{{house.user_avatar}}"></div>#}
-{#                <h2 class="landlord-name">房东： <span>{{house.user_name}}</span></h2>#}
-{#            </div>#}
-{#            <div class="house-info layout-style">#}
-{#               <h3>房屋地址</h3>#}
-{#               <ul class="house-info-list text-center">#}
-{#                    <li>{{house.address}}</li>#}
-{#               </ul>#}
-{#            </div>#}
-{#            <ul class="house-type layout-style">#}
-{#                <li>#}
-{#                    <span class="icon-house"></span>#}
-{#                    <div class="icon-text">#}
-{#                        <h3>出租{{house.room_count}}间</h3>#}
-{#                        <p>房屋面积:{{house.acreage}}平米</p>#}
-{#                        <p>房屋户型:{{house.unit}}</p>#}
-{#                    </div>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <span class="icon-user"></span>#}
-{#                    <div class="icon-text">#}
-{#                        <h3>宜住{{house.capacity}}人</h3>#}
-{#                    </div>#}
-{#                </li>#}
-{#                <li>#}
-{#                    <span class="icon-bed"></span>#}
-{#                    <div class="icon-text">#}
-{#                        <h3>卧床配置</h3>#}
-{#                        <p>{{house.beds}}</p>#}
-{#                    </div>#}
-{#                </li>#}
-{#            </ul>#}
-{#            <div class="house-info layout-style">#}
-{#                <h3>房间详情</h3>#}
-{#                <ul class="house-info-list">#}
-{#                    <li>收取押金<span>{{(house.deposit/100.0).toFixed(0)}}</span></li>#}
-{#                    <li>最少入住天数<span>{{house.min_days}}</span></li>#}
-{#                    <li>最多入住天数<span>{{if house.max_days==0}}无限制{{else}}{{house.max_days}}{{/if}}</span></li>#}
-{#                </ul>#}
-{#            </div>#}
-{#            <div class="house-facility layout-style">#}
-{#                <h3>配套设施</h3>#}
-{#                <ul class="house-facility-list clearfix">#}
-{#                    <li><span class="{{if house.facilities.indexOf(1)>=0}}wirelessnetwork-ico{{else}}jinzhi-ico{{/if}}"></span>无线网络</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(2)>=0}}shower-ico{{else}}jinzhi-ico{{/if}}"></span>热水淋浴</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(3)>=0}}aircondition-ico{{else}}jinzhi-ico{{/if}}"></span>空调</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(4)>=0}}heater-ico{{else}}jinzhi-ico{{/if}}"></span>暖气</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(5)>=0}}smoke-ico{{else}}jinzhi-ico{{/if}}"></span>允许吸烟</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(6)>=0}}drinking-ico{{else}}jinzhi-ico{{/if}}"></span>饮水设备</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(7)>=0}}brush-ico{{else}}jinzhi-ico{{/if}}"></span>牙具</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(8)>=0}}soap-ico{{else}}jinzhi-ico{{/if}}"></span>香皂</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(9)>=0}}slippers-ico{{else}}jinzhi-ico{{/if}}"></span>拖鞋</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(10)>=0}}toiletpaper-ico{{else}}jinzhi-ico{{/if}}"></span>手纸</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(11)>=0}}towel-ico{{else}}jinzhi-ico{{/if}}"></span>毛巾</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(12)>=0}}toiletries-ico{{else}}jinzhi-ico{{/if}}"></span>沐浴露、洗发露</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(13)>=0}}icebox-ico{{else}}jinzhi-ico{{/if}}"></span>冰箱</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(14)>=0}}washer-ico{{else}}jinzhi-ico{{/if}}"></span>洗衣机</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(15)>=0}}elevator-ico{{else}}jinzhi-ico{{/if}}"></span>电梯</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(16)>=0}}iscook-ico{{else}}jinzhi-ico{{/if}}"></span>允许做饭</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(17)>=0}}pet-ico{{else}}jinzhi-ico{{/if}}"></span>允许带宠物</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(18)>=0}}meet-ico{{else}}jinzhi-ico{{/if}}"></span>允许聚会</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(19)>=0}}accesssys-ico{{else}}jinzhi-ico{{/if}}"></span>门禁系统</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(20)>=0}}parkingspace-ico{{else}}jinzhi-ico{{/if}}"></span>停车位</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(21)>=0}}wirednetwork-ico{{else}}jinzhi-ico{{/if}}"></span>有线网络</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(22)>=0}}tv-ico{{else}}jinzhi-ico{{/if}}"></span>电视</li>#}
-{#                    <li><span class="{{if house.facilities.indexOf(23)>=0}}hotbathtub-ico{{else}}jinzhi-ico{{/if}}"></span>浴缸</li>#}
-{#                </ul>#}
-{#            </div>#}
-{#            {{if house.comments }}#}
-{#            <div class="house-info layout-style">#}
-{#                <h3>评价信息</h3>#}
-{#                <ul class="house-comment-list">#}
-{#                    {{ each house.comments as comment}}#}
-{#                    <li>#}
-{#                        <p>{{comment.user_name}}<span class="fr">{{comment.ctime}}</span></p>#}
-{#                        <p>{{comment.comment}}</p>#}
-{#                    </li>#}
-{#                    {{/each}}#}
-{#                </ul>#}
-{#            </div>#}
-{#            {{/if}}#}
-{#        </script>#}
-        <a class="book-house" href="">即刻预定</a>
+            <div class="detail-header layout-style">
+                <h2 class="house-title">{{data.house.title}}</h2>
+                <div class="landlord-pic"><img src="{{data.house.user_avatar}}"></div>
+                <h2 class="landlord-name">房东： <span>{{data.house.user_name}}</span></h2>
+            </div>
+            <div class="house-info layout-style">
+               <h3>房屋地址</h3>
+               <ul class="house-info-list text-center">
+                    <li>{{data.house.address}}</li>
+               </ul>
+            </div>
+            <ul class="house-type layout-style">
+                <li>
+                    <span class="icon-house"></span>
+                    <div class="icon-text">
+                        <h3>出租{{data.house.room_count}}间</h3>
+                        <p>房屋面积:{{data.house.acreage}}平米</p>
+                        <p>房屋户型:{{data.house.unit}}</p>
+                    </div>
+                </li>
+                <li>
+                    <span class="icon-user"></span>
+                    <div class="icon-text">
+                        <h3>宜住{{data.house.capacity}}人</h3>
+                    </div>
+                </li>
+                <li>
+                    <span class="icon-bed"></span>
+                    <div class="icon-text">
+                        <h3>卧床配置</h3>
+                        <p>{{data.house.beds}}</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="house-info layout-style">
+                <h3>房间详情</h3>
+                <ul class="house-info-list">
+                    <li>收取押金<span>{{data.house.deposit/100.0}}</span></li>
+                    <li>最少入住天数<span>{{data.house.min_days}}</span></li>
+                    <li>最多入住天数<span>{% if data.house.max_days == 0 %}无限制 {% else %}{{ data.house.max_days }}{% endif %}</span></li>
+                </ul>
+            </div>
+            <div class="house-facility layout-style">
+                <h3>配套设施</h3>
+                <ul class="house-facility-list clearfix">
+                      {% for item in params. specification_list %}
+                          <li><span class="{% if data.house.facilities[loop.index0] == item.id %}{{ item.class }}{% else %}jinzhi-ico{% endif %}"></span>{{ item.specification_name }}</li>
+                      {% endfor %}
+
+{#                    <li><span class="{% if data.house.facilities[0]>=0%}wirelessnetwork-ico{% else %}jinzhi-ico{% endif %}"></span>无线网络</li>#}
+{#                    <li><span class="{% if data.house.facilities[1]>=0%}shower-ico{% else %}jinzhi-ico{% endif %}"></span>热水淋浴</li>#}
+{#                    <li><span class="{% if data.house.facilities[2]>=0%}aircondition-ico{% else %}jinzhi-ico{% endif %}"></span>空调</li>#}
+{#                    <li><span class="{% if data.house.facilities[3]>=0%}heater-ico{% else %}jinzhi-ico{% endif %}"></span>暖气</li>#}
+{#                    <li><span class="{% if data.house.facilities[5]>=0%}drinking-ico{% else %}jinzhi-ico{% endif %}"></span>饮水设备</li>#}
+{#                    <li><span class="{% if data.house.facilities[6]>=0%}brush-ico{% else %}jinzhi-ico{% endif %}"></span>牙具</li>#}
+{#                    <li><span class="{% if data.house.facilities[7]>=0%}soap-ico{% else %}jinzhi-ico{% endif %}"></span>香皂</li>#}
+{#                    <li><span class="{% if data.house.facilities[8]>=0%}slippers-ico{% else %}jinzhi-ico{% endif %}"></span>拖鞋</li>#}
+{#                    <li><span class="{% if data.house.facilities[9]>=0%}toiletpaper-ico{% else %}jinzhi-ico{% endif %}"></span>手纸</li>#}
+{#                    <li><span class="{% if data.house.facilities[10]>=0%}towel-ico{% else %}jinzhi-ico{% endif %}"></span>毛巾</li>#}
+{#                    <li><span class="{% if data.house.facilities[11]>=0%}}toiletries-ico{% else %}jinzhi-ico{% endif %}"></span>沐浴露、洗发露</li>#}
+{#                    <li><span class="{% if data.house.facilities[12]>=0%}icebox-ico{% else %}jinzhi-ico{% endif %}"></span>冰箱</li>#}
+{#                    <li><span class="{% if data.house.facilities[13]>=0%}washer-ico{% else %}jinzhi-ico{% endif %}"></span>洗衣机</li>#}
+{#                    <li><span class="{% if data.house.facilities[14]>=0%}elevator-ico{% else %}jinzhi-ico{% endif %}"></span>电梯</li>#}
+{#                    <li><span class="{% if data.house.facilities[15]>=0%}iscook-ico{% else %}jinzhi-ico{% endif %}"></span>允许做饭</li>#}
+{#                    <li><span class="{% if data.house.facilities[16]>=0%}pet-ico{% else %}jinzhi-ico{% endif %}"></span>允许带宠物</li>#}
+{#                    <li><span class="{% if data.house.facilities[17]>=0%}meet-ico{% else %}jinzhi-ico{% endif %}"></span>允许聚会</li>#}
+{#                    <li><span class="{% if data.house.facilities[18]>=0%}accesssys-ico{% else %}jinzhi-ico{% endif %}"></span>门禁系统</li>#}
+{#                    <li><span class="{% if data.house.facilities[19]>=0%}parkingspace-ico{% else %}jinzhi-ico{% endif %}"></span>停车位</li>#}
+{#                    <li><span class="{% if data.house.facilities[20]>=0%}wirednetwork-ico{% else %}jinzhi-ico{% endif %}"></span>有线网络</li>#}
+{#                    <li><span class="{% if data.house.facilities[19]>=0%}tv-ico{% else %}jinzhi-ico{% endif %}"></span>电视</li>#}
+{#                    <li><span class="{% if data.house.facilities[20]>=0%}hotbathtub-ico{% else %}jinzhi-ico{% endif %}"></span>浴缸</li>#}
+                </ul>
+            </div>
+            {% if data.house.comments %}
+            <div class="house-info layout-style">
+                <h3>评价信息</h3>
+                <ul class="house-comment-list">
+                    {% for comment in data.house.comments%}
+                        <li>
+                            <p>{{comment.user_name}}<span class="fr">{{comment.ctime}}</span></p>
+                            <p>{{comment.comment}}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            {% if current_user.id != data.house.user_id %}
+                <a class="book-house" href="">即刻预定</a>
+            {% endif %}
 {% endblock %}
+{% block scripts %} <script type="text/javascript" src="{{ url_for('static',filename='js/detail.js') }}"></script>{% endblock %}
 </div>
