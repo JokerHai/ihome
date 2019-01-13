@@ -18,7 +18,7 @@ class Config:
     MYSQL_DB_USERNAME = 'root'
 
     # sql密码
-    MYSQL_DB_PASSWORD = 'root'
+    MYSQL_DB_PASSWORD = 'mysql'
 
     # sql端口
     MYSQL_DB_PORT = "3306"
