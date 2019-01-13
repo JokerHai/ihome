@@ -1,7 +1,3 @@
-function hrefBack() {
-    history.go(-1);
-}
-
 // // 解析提取url中的查询字符串参数
 // function decodeQuery(){
 //     var search = decodeURI(document.location.search);
@@ -49,5 +45,8 @@ $(document).ready(function(){
     //         // }
     //     }
     // })
-
+    
 })
+function reservation(ids) {
+    window.location.href = jsroot+"/api/house_done?ids="+ids;
+}

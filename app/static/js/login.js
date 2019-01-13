@@ -2,7 +2,6 @@ function getCookie(name) {
     var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
     return r ? r[1] : undefined;
 }
-
 $(document).ready(function() {
     $("#mobile").focus(function(){
         $("#mobile-err").hide();
@@ -41,7 +40,12 @@ $(document).ready(function() {
             contentType: "application/json",
             success: function (resp) {
                 if (resp.status == "0") {
-                    location.href = jsroot;
+                    var queryData = decodeQuery();
+                    if (queryData != ""){
+                        location.href = decodeURIComponent(queryData["callback_url"]);
+                    }else{
+                        location.href = jsroot;
+                    }
                 }else {
                     $("#password-err span").html(resp.errmsg)
                     $("#password-err").show()

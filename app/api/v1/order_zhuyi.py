@@ -1,8 +1,7 @@
-from flask import current_app
-from flask import g
-from flask import redirect
-from flask import render_template, jsonify
-from flask import request
+from flask import current_app, g, redirect, render_template, jsonify, request, url_for
+from flask_login import current_user, login_required
+
+from dateutil.parser import parse
 
 from app import db
 from app.common.common import user_login_data
@@ -211,4 +210,71 @@ def other_orders():
 # def order_test(file_name):
 #     file_name = "html/" + file_name
 #     return current_app.send_static_file(file_name)
+# @login_required
+# @api.route('/house_booking/<int:ids>',methods=['GET'])
+# def house_booking(ids):
+#
+#     # 如果用户未登录，跳转至登录页面
+#     if not current_user.is_authenticated:
+#         return redirect(url_for('auth.login_view', callback_url=url_for('.show_detail', ids=ids)))
+#
+#     houses = House.query.get_or_404(ids)
+#
+#     data = {"house":houses.to_basic_dict()}
+#
+#     return render_template('order_zhuyi/booking.html',data = data)
+@login_required
+@api.route('/house_done',methods = ['GET','POST'])
+def house_done():
+
+    if request.method == "POST":
+        try:
+            house_id    = request.json.get("house_id")
+
+            start_date  = request.json.get("start_date")
+
+            end_date    = request.json.get("end_date")
+
+            if not all([house_id,start_date,end_date]):
+
+                return jsonify(status=RET.PARAMERR, errmsg="参数不合法")
+
+            houses = House.query.get_or_404(house_id)
+
+            if houses is None:
+                return jsonify(status=RET.DBERR, errmsg="数据异常，请联系管理员")
+
+            days = (parse(end_date)-parse(start_date)).days
+
+            order = Order(user_id    = current_user.id,
+                          house_id   = houses.id,
+                          begin_date = start_date,
+                          end_date   = end_date,
+                          days       = days,
+                          house_price= houses.price,
+                          amount     = houses.price * days,
+                          status     = 'WAIT_ACCEPT'
+                         )
+            db.session.add(order)
+            insert_id = db.session.commit()
+            data = {
+                "order_id" :insert_id
+            }
+            return jsonify(status=RET.OK, errmsg="提交成功",data = data)
+        except Exception as e:
+            current_app.logger.error(e)
+            return jsonify(status=RET.DBERR, errmsg="程序异常，请联系管理员")
+    else:
+        ids = request.args.get("ids",type = int)
+        # 如果用户未登录，跳转至登录页面
+        if not current_user.is_authenticated:
+
+            return redirect(url_for('auth.login_view', callback_url = url_for('.show_detail', ids = ids)))
+
+        houses = House.query.get_or_404(ids)
+
+        data = {"house": houses.to_basic_dict()}
+
+        return render_template('order_zhuyi/booking.html', data=data)
+
 

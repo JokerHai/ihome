@@ -67,37 +67,10 @@ def houses_list():
         current_app.logger.error(e)
         return jsonify(status=RET.DBERR, errmsg="程序异常，请联系管理员")
 
-@api.route('/show_detail/<int:id>',methods = ['GET'])
-def show_detail(id):
-    print(current_user.id)
-    data = {
-        "house":{
-            "acreage": 5,
-            "address": "我是地址",
-            "beds": "5张床",
-            "capacity": 5,
-            "comments":[{
-                "comment": "哎哟不错哟",
-                "ctime": "2017-11-14 11:17:07",
-                "user_name": "匿名用户"
-            }],
-            "deposit": 500,
-            "facilities":[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21],
-            "hid": 4,
-            "img_urls": [
-                "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=285959312,3266930479&fm=27&gp=0.jpg",
-                "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3636400456,4056026476&fm=27&gp=0.jpg"
-            ],
-            "max_days": 5,
-            "min_days": 5,
-            "price": 500,
-            "room_count": 5,
-            "title": "555",
-            "unit": "5",
-            "user_avatar": "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2879950569,4061525608&fm=27&gp=0.jpg",
-            "user_id": 1,
-            "user_name": "哈哈哈哈哈哈"
-        },
-        "user_id": 1
-    }
+@api.route('/show_detail/<int:ids>',methods = ['GET'])
+def show_detail(ids):
+    houses = House.query.get_or_404(ids)
+
+    data = {'house':houses.to_full_dict()}
+
     return render_template('search/detail.html',data = data)

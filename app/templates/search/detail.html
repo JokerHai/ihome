@@ -60,7 +60,7 @@
             <div class="house-info layout-style">
                 <h3>房间详情</h3>
                 <ul class="house-info-list">
-                    <li>收取押金<span>{{data.house.deposit/100.0}}</span></li>
+                    <li>收取押金<span>{{ '%.2f' | format(data.house.deposit/100)}}</span></li>
                     <li>最少入住天数<span>{{data.house.min_days}}</span></li>
                     <li>最多入住天数<span>{% if data.house.max_days == 0 %}无限制 {% else %}{{ data.house.max_days }}{% endif %}</span></li>
                 </ul>
@@ -71,29 +71,6 @@
                       {% for item in params. specification_list %}
                           <li><span class="{% if data.house.facilities[loop.index0] == item.id %}{{ item.class }}{% else %}jinzhi-ico{% endif %}"></span>{{ item.specification_name }}</li>
                       {% endfor %}
-
-{#                    <li><span class="{% if data.house.facilities[0]>=0%}wirelessnetwork-ico{% else %}jinzhi-ico{% endif %}"></span>无线网络</li>#}
-{#                    <li><span class="{% if data.house.facilities[1]>=0%}shower-ico{% else %}jinzhi-ico{% endif %}"></span>热水淋浴</li>#}
-{#                    <li><span class="{% if data.house.facilities[2]>=0%}aircondition-ico{% else %}jinzhi-ico{% endif %}"></span>空调</li>#}
-{#                    <li><span class="{% if data.house.facilities[3]>=0%}heater-ico{% else %}jinzhi-ico{% endif %}"></span>暖气</li>#}
-{#                    <li><span class="{% if data.house.facilities[5]>=0%}drinking-ico{% else %}jinzhi-ico{% endif %}"></span>饮水设备</li>#}
-{#                    <li><span class="{% if data.house.facilities[6]>=0%}brush-ico{% else %}jinzhi-ico{% endif %}"></span>牙具</li>#}
-{#                    <li><span class="{% if data.house.facilities[7]>=0%}soap-ico{% else %}jinzhi-ico{% endif %}"></span>香皂</li>#}
-{#                    <li><span class="{% if data.house.facilities[8]>=0%}slippers-ico{% else %}jinzhi-ico{% endif %}"></span>拖鞋</li>#}
-{#                    <li><span class="{% if data.house.facilities[9]>=0%}toiletpaper-ico{% else %}jinzhi-ico{% endif %}"></span>手纸</li>#}
-{#                    <li><span class="{% if data.house.facilities[10]>=0%}towel-ico{% else %}jinzhi-ico{% endif %}"></span>毛巾</li>#}
-{#                    <li><span class="{% if data.house.facilities[11]>=0%}}toiletries-ico{% else %}jinzhi-ico{% endif %}"></span>沐浴露、洗发露</li>#}
-{#                    <li><span class="{% if data.house.facilities[12]>=0%}icebox-ico{% else %}jinzhi-ico{% endif %}"></span>冰箱</li>#}
-{#                    <li><span class="{% if data.house.facilities[13]>=0%}washer-ico{% else %}jinzhi-ico{% endif %}"></span>洗衣机</li>#}
-{#                    <li><span class="{% if data.house.facilities[14]>=0%}elevator-ico{% else %}jinzhi-ico{% endif %}"></span>电梯</li>#}
-{#                    <li><span class="{% if data.house.facilities[15]>=0%}iscook-ico{% else %}jinzhi-ico{% endif %}"></span>允许做饭</li>#}
-{#                    <li><span class="{% if data.house.facilities[16]>=0%}pet-ico{% else %}jinzhi-ico{% endif %}"></span>允许带宠物</li>#}
-{#                    <li><span class="{% if data.house.facilities[17]>=0%}meet-ico{% else %}jinzhi-ico{% endif %}"></span>允许聚会</li>#}
-{#                    <li><span class="{% if data.house.facilities[18]>=0%}accesssys-ico{% else %}jinzhi-ico{% endif %}"></span>门禁系统</li>#}
-{#                    <li><span class="{% if data.house.facilities[19]>=0%}parkingspace-ico{% else %}jinzhi-ico{% endif %}"></span>停车位</li>#}
-{#                    <li><span class="{% if data.house.facilities[20]>=0%}wirednetwork-ico{% else %}jinzhi-ico{% endif %}"></span>有线网络</li>#}
-{#                    <li><span class="{% if data.house.facilities[19]>=0%}tv-ico{% else %}jinzhi-ico{% endif %}"></span>电视</li>#}
-{#                    <li><span class="{% if data.house.facilities[20]>=0%}hotbathtub-ico{% else %}jinzhi-ico{% endif %}"></span>浴缸</li>#}
                 </ul>
             </div>
             {% if data.house.comments %}
@@ -109,8 +86,12 @@
                 </ul>
             </div>
             {% endif %}
-            {% if current_user.id != data.house.user_id %}
-                <a class="book-house" href="">即刻预定</a>
+            {% if current_user.is_anonymous %}
+                    <a class="book-house" href="javascript:void(0);" onclick="reservation({{ data.house.hid }})">即刻预定</a>
+            {% else: %}
+                {% if current_user.id != data.house.user_id %}
+                    <a class="book-house" href="javascript:void(0);" onclick="reservation({{ data.house.hid }})">即刻预定</a>
+            {% endif %}
             {% endif %}
 {% endblock %}
 {% block scripts %} <script type="text/javascript" src="{{ url_for('static',filename='js/detail.js') }}"></script>{% endblock %}

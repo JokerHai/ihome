@@ -65,7 +65,7 @@ function updateHouseData(action) {
                             '<a href="'+jsroot+'/api/show_detail/'+resp.data.houses[i].house_id+'"><img src="'+resp.data.houses[i].img_url+'"></a>'+
                             '<div class="house-desc">'+
                                 '<div class="landlord-pic"><img src="'+resp.data.houses[i].user_avatar+'"></div>'+
-                                '<div class="house-price">￥<span>'+resp.data.houses[i].price+'</span>/晚</div>'+
+                                '<div class="house-price">￥<span>'+(resp.data.houses[i].price/100).toFixed(2)+'</span>/晚</div>'+
                             '<div class="house-intro">'+
                                 '<span class="house-title">'+resp.data.houses[i].title+'</span>'+
                                 '<em>出租'+resp.data.houses[i].room_count+'间 - '+resp.data.houses[i].order_count+'次入住 - '+resp.data.houses[i].address+'</em>'+

@@ -1,21 +1,3 @@
-function hrefBack() {
-    history.go(-1);
-}
-
-function getCookie(name) {
-    var r = document.cookie.match("\\b" + name + "=([^;]*)\\b");
-    return r ? r[1] : undefined;
-}
-
-function decodeQuery(){
-    var search = decodeURI(document.location.search);
-    return search.replace(/(^\?)/, '').split('&').reduce(function(result, item){
-        values = item.split('=');
-        result[values[0]] = values[1];
-        return result;
-    }, {});
-}
-
 function showErrorMsg() {
     $('.popup_con').fadeIn('fast', function() {
         setTimeout(function(){
@@ -25,16 +7,6 @@ function showErrorMsg() {
 }
 
 $(document).ready(function(){
-    // 检查用户的登录状态
-    $.get('/api/v1.0/session', function (resp) {
-        if (resp.errno == "0") {
-            // 取数据进行判断是否有值
-            if (!(resp.data.user_id && resp.data.name)) {
-                location.href = "/login.html"
-            }
-        }
-    })
-
     $(".input-daterange").datepicker({
         format: "yyyy-mm-dd",
         startDate: "today",
@@ -45,7 +17,7 @@ $(document).ready(function(){
         var startDate = $("#start-date").val();
         var endDate = $("#end-date").val();
 
-        if (startDate && endDate && startDate > endDate) {
+        if ((startDate && endDate && startDate > endDate) || (startDate && endDate && startDate == endDate)) {
             showErrorMsg("日期有误，请重新选择!");
         } else {
             var sd = new Date(startDate);
@@ -57,21 +29,13 @@ $(document).ready(function(){
         }
     });
     var queryData = decodeQuery();
-    var houseId = queryData["hid"];
-
-    // 获取房屋的基本信息
-    $.get("/api/v1.0/houses/" + houseId, function (resp) {
-        if (resp.errno == "0") {
-            $(".house-info>img").attr("src", resp.data.house.img_urls[0])
-            $(".house-text>h3").html(resp.data.house.title)
-            $(".house-text>p>span").html((resp.data.house.price / 100).toFixed(0))
-        }
-    })
+    var houseId = queryData["ids"];
 
     // 订单提交
     $(".submit-btn").on("click", function () {
         var startDate = $("#start-date").val();
         var endDate = $("#end-date").val();
+        var house_id = $("#house_id").val();
 
         if (!(startDate && endDate)) {
             return
@@ -84,7 +48,7 @@ $(document).ready(function(){
         }
 
         $.ajax({
-            url: "/api/v1.0/orders",
+            url: jsroot+"/api/house_done",
             type: "post",
             headers: {
                 "X-CSRFToken": getCookie('csrf_token')
@@ -92,12 +56,11 @@ $(document).ready(function(){
             data: JSON.stringify(params),
             contentType: "application/json",
             success: function (resp) {
-                if (resp.errno == "0"){
-                    location.href = "/orders.html"
-                }else if (resp.errno == "4101") {
-                    location.href = "/login.html"
+                if (resp.status == "0"){
+                    location.href = jsroot + "/api/orders?role=custom";
                 }else {
                     alert(resp.errmsg)
+                    return false
                 }
             }
         })

@@ -113,18 +113,16 @@ def register():
                     )
         db.session.add(user)
         db.session.commit()
+
+        login_flag = fork_login(mobile, password)
+
+        if login_flag:
+            return jsonify(status=RET.OK, errmsg="注册成功")
+        else:
+            return jsonify(status=RET.DBERR, errmsg="程序异常，请联系管理员")
     except Exception as e:
         current_app.logger.error(e)
         return jsonify(status=RET.DBERR, errmsg="程序异常，请联系管理员")
-
-    login_flag = fork_login(mobile, password)
-
-    if login_flag:
-        return jsonify(status=RET.OK, errmsg="注册成功")
-    else:
-        return jsonify(status=RET.DBERR, errmsg="程序异常，请联系管理员")
-
-
 # 弹出注册页面
 @auth.route('/register_view', methods=['GET'])
 def register_view():
