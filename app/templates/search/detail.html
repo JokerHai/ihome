@@ -19,7 +19,7 @@
                 {% endfor %}
             </ul>
             <div class="swiper-pagination"></div>
-            <div class="house-price">￥<span>{{ data.house.price/100.0 }}</span>/晚</div>
+            <div class="house-price">￥<span>{{ '%.2f'| format(data.house.price/100) }}</span>/晚</div>
         </div>
         <div class="detail-con">
         </div>

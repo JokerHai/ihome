@@ -128,11 +128,11 @@ class House(BaseModel, db.Model):
             "title": self.title,
             "price": self.price,
             "area_name": self.area.name,
-            "img_url":  self.index_image_url if self.index_image_url else "",
+            "img_url":  constants.QINIU_DOMIN_PREFIX + self.index_image_url if self.index_image_url else "",
             "room_count": self.room_count,
             "order_count": self.order_count,
             "address": self.address,
-            "user_avatar": self.user.avatar_url if self.user.avatar_url else "",
+            "user_avatar": constants.QINIU_DOMIN_PREFIX + self.user.avatar_url if self.user.avatar_url else "",
             "ctime": self.create_time.strftime("%Y-%m-%d")
         }
         return house_dict
